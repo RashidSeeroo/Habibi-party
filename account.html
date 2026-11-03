@@ -80,19 +80,9 @@
   </section>
   <section class="section shell content">
     <div class="narrow narrow--sm">
-      <div class="tabs-pill" role="tablist" data-tabs>
-        <button type="button" role="tab" aria-selected="true" data-tab="in">Sign in</button>
-        <button type="button" role="tab" aria-selected="false" data-tab="otp">Mobile OTP</button>
-        <button type="button" role="tab" aria-selected="false" data-tab="up">Create account</button>
-      </div>
-      <form class="form-card" data-auth="in" novalidate><button class="btn-google w-100" type="button" data-google><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Continue with Google</button><div class="or-line"><span>or</span></div>
-        <div class="field"><label class="form-label" for="a-email">Email</label><input class="form-control" id="a-email" type="email" required autocomplete="email"></div>
-        <div class="field"><label class="form-label" for="a-pass">Password</label><input class="form-control" id="a-pass" type="password" required minlength="6" autocomplete="current-password"></div>
-        <button class="btn-hp w-100" type="submit">Sign in</button>
-        <p class="form-msg" data-form-msg role="status" aria-live="polite"></p>
-      </form>
-      <form class="form-card" data-auth="otp" data-otp hidden novalidate>
+      <form class="form-card" data-otp novalidate>
         <div data-otp-step="phone">
+          <button class="btn-google w-100" type="button" data-google><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Continue with Google</button><div class="or-line"><span>or use your mobile</span></div>
           <h2 class="otp-h">Sign in with your mobile</h2>
           <p class="otp-sub">We'll text a 6-digit code to your number. No password needed.</p>
           <div class="field"><label class="form-label" for="o-phone">Mobile number</label><input class="form-control" id="o-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+971 50 123 4567" required pattern="^\+?[0-9\s\-]{8,16}$" title="Enter a valid mobile number, e.g. +971 50 123 4567"></div>
@@ -102,17 +92,11 @@
           <h2 class="otp-h">Enter the code</h2>
           <p class="otp-sub">Sent to <strong data-otp-to></strong> &middot; <button type="button" class="otp-link" data-otp-change>Change number</button></p>
           <div class="field"><label class="form-label" for="o-code">6-digit code</label><input class="form-control otp-code" id="o-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="&bull; &bull; &bull; &bull; &bull; &bull;" required pattern="[0-9]{6}"></div>
+          <div class="field"><label class="form-label" for="o-name">Your name <span class="text-secondary">(optional, for new accounts)</span></label><input class="form-control" id="o-name" autocomplete="name"></div>
           <div class="otp-demo" data-otp-demo hidden></div>
           <button class="btn-hp w-100" type="submit">Verify &amp; sign in</button>
           <p class="otp-resend"><button type="button" class="otp-link" data-otp-resend disabled>Resend code</button></p>
         </div>
-        <p class="form-msg" data-form-msg role="status" aria-live="polite"></p>
-      </form>
-      <form class="form-card" data-auth="up" hidden novalidate><button class="btn-google w-100" type="button" data-google><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Continue with Google</button><div class="or-line"><span>or</span></div>
-        <div class="field"><label class="form-label" for="r-name">Full name</label><input class="form-control" id="r-name" required autocomplete="name"></div>
-        <div class="field"><label class="form-label" for="r-email">Email</label><input class="form-control" id="r-email" type="email" required autocomplete="email"></div>
-        <div class="field"><label class="form-label" for="r-phone">Mobile number</label><input class="form-control" id="r-phone" type="tel" required inputmode="tel" autocomplete="tel" placeholder="+971 50 123 4567" pattern="^\+?[0-9\s\-]{8,16}$" title="Enter a valid mobile number, e.g. +971 50 123 4567"></div><div class="field"><label class="form-label" for="r-pass">Password (6+ characters)</label><input class="form-control" id="r-pass" type="password" required minlength="6" autocomplete="new-password"></div>
-        <button class="btn-hp w-100" type="submit">Create account</button>
         <p class="form-msg" data-form-msg role="status" aria-live="polite"></p>
       </form>
     </div>

@@ -130,7 +130,7 @@
       ok.then(good => {
         if (!good) { say(otp, 'That code is not right. Check it and try again.', false); codeIn.select(); return; }
         let old = null; try { old = JSON.parse(localStorage.getItem('hp-user') || 'null'); } catch {}
-        const user = old && old.phone === phone ? old : { name: 'Habibi guest', phone };
+        const user = old && old.phone === phone ? old : { name: ($('#o-name').value || '').trim() || 'Habibi guest', phone };
         try { localStorage.setItem('hp-user', JSON.stringify(user)); } catch {}
         say(otp, 'Verified! Taking you to your profile…', true);
         setTimeout(() => (location.href = 'profile.html'), 700);
