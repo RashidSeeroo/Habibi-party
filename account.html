@@ -93,6 +93,8 @@
           <p class="otp-sub">Sent to <strong data-otp-to></strong> &middot; <button type="button" class="otp-link" data-otp-change>Change number</button></p>
           <div class="field"><label class="form-label" for="o-code">6-digit code</label><input class="form-control otp-code" id="o-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="&bull; &bull; &bull; &bull; &bull; &bull;" required pattern="[0-9]{6}"></div>
           <div class="field"><label class="form-label" for="o-name">Your name <span class="text-secondary">(optional, for new accounts)</span></label><input class="form-control" id="o-name" autocomplete="name"></div>
+          <div class="field"><label class="form-label" for="o-email">Email address <span class="text-secondary">(optional, for order updates)</span></label><input class="form-control" id="o-email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+          <label class="otp-terms"><input type="checkbox" id="o-terms" required><span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
           <div class="otp-demo" data-otp-demo hidden></div>
           <button class="btn-hp w-100" type="submit">Verify &amp; sign in</button>
           <p class="otp-resend"><button type="button" class="otp-link" data-otp-resend disabled>Resend code</button></p>

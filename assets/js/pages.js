@@ -124,6 +124,9 @@
         phone = phoneIn.value.trim().replace(/\s+/g, ' '); return begin();
       }
       if (!/^\d{6}$/.test(codeIn.value)) { say(otp, 'Enter the 6-digit code.', false); codeIn.focus(); return; }
+      const email = $('#o-email').value.trim();
+      if (email && !$('#o-email').checkValidity()) { say(otp, 'Enter a valid email address, like you@example.com.', false); $('#o-email').focus(); return; }
+      if (!$('#o-terms').checked) { say(otp, 'Please accept the Terms & Conditions to continue.', false); $('#o-terms').focus(); return; }
       const ok = OTP_API
         ? fetch(OTP_API + '/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, code: codeIn.value }) }).then(r => r.ok && r.json()).then(j => !!(j && j.ok))
         : Promise.resolve(codeIn.value === sent);
@@ -131,6 +134,7 @@
         if (!good) { say(otp, 'That code is not right. Check it and try again.', false); codeIn.select(); return; }
         let old = null; try { old = JSON.parse(localStorage.getItem('hp-user') || 'null'); } catch {}
         const user = old && old.phone === phone ? old : { name: ($('#o-name').value || '').trim() || 'Habibi guest', phone };
+        if (email && !user.email) user.email = email;
         try { localStorage.setItem('hp-user', JSON.stringify(user)); } catch {}
         say(otp, 'Verified! Taking you to your profile…', true);
         setTimeout(() => (location.href = 'profile.html'), 700);
