@@ -74,7 +74,7 @@
       $$('button', tabs).forEach(x => x.setAttribute('aria-selected', String(x === b)));
       forms.forEach(f => (f.hidden = f.dataset.auth !== b.dataset.tab));
     });
-    forms.forEach(form => form.addEventListener('submit', e => {
+    forms.filter(f => !f.hasAttribute('data-otp')).forEach(form => form.addEventListener('submit', e => {
       e.preventDefault();
       const bad = $$('input', form).find(f => !f.checkValidity());
       if (bad) { say(form, 'Check the highlighted field and try again.', false); bad.focus(); return; }
@@ -89,6 +89,56 @@
       setTimeout(() => (location.href = 'profile.html'), 700);
     }));
     if (location.hash === '#register') $('[data-tab="up"]', tabs).click();
+  }
+
+  /* ---------- Mobile OTP sign-in ---------- */
+  // Point OTP_API at your SMS backend (POST {phone} to /send, POST {phone, code} to /verify -> {ok:true}).
+  // Left empty, the page runs in demo mode and shows the code on screen instead of texting it.
+  const OTP_API = '';
+  const otp = $('[data-otp]');
+  if (otp) {
+    const steps = { phone: $('[data-otp-step="phone"]', otp), code: $('[data-otp-step="code"]', otp) };
+    const phoneIn = $('#o-phone'), codeIn = $('#o-code'), resend = $('[data-otp-resend]', otp), demo = $('[data-otp-demo]', otp);
+    let phone = '', sent = '', timer = 0;
+    const show = s => { steps.phone.hidden = s !== 'phone'; steps.code.hidden = s !== 'code'; say(otp, '', true); (s === 'phone' ? phoneIn : codeIn).focus(); };
+    const countdown = () => {
+      let n = 30; resend.disabled = true; clearInterval(timer);
+      const tick = () => { resend.textContent = n > 0 ? `Resend code in ${n}s` : 'Resend code'; resend.disabled = n > 0; if (n-- <= 0) clearInterval(timer); };
+      tick(); timer = setInterval(tick, 1000);
+    };
+    const send = () => {
+      if (OTP_API) {
+        return fetch(OTP_API + '/send', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone }) })
+          .then(r => { if (!r.ok) throw 0; demo.hidden = true; });
+      }
+      sent = String(Math.floor(100000 + Math.random() * 900000));
+      demo.hidden = false; demo.innerHTML = `Demo mode: no SMS is sent. Your code is <strong>${sent}</strong>.`;
+      return Promise.resolve();
+    };
+    const begin = () => send().then(() => { $('[data-otp-to]', otp).textContent = phone; codeIn.value = ''; show('code'); countdown(); })
+      .catch(() => say(otp, 'Could not send the code. Try again in a moment.', false));
+    otp.addEventListener('submit', e => {
+      e.preventDefault();
+      if (!steps.phone.hidden) {
+        if (!phoneIn.checkValidity() || !phoneIn.value.trim()) { say(otp, 'Enter a valid mobile number, like +971 50 123 4567.', false); phoneIn.focus(); return; }
+        phone = phoneIn.value.trim().replace(/\s+/g, ' '); return begin();
+      }
+      if (!/^\d{6}$/.test(codeIn.value)) { say(otp, 'Enter the 6-digit code.', false); codeIn.focus(); return; }
+      const ok = OTP_API
+        ? fetch(OTP_API + '/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, code: codeIn.value }) }).then(r => r.ok && r.json()).then(j => !!(j && j.ok))
+        : Promise.resolve(codeIn.value === sent);
+      ok.then(good => {
+        if (!good) { say(otp, 'That code is not right. Check it and try again.', false); codeIn.select(); return; }
+        let old = null; try { old = JSON.parse(localStorage.getItem('hp-user') || 'null'); } catch {}
+        const user = old && old.phone === phone ? old : { name: 'Habibi guest', phone };
+        try { localStorage.setItem('hp-user', JSON.stringify(user)); } catch {}
+        say(otp, 'Verified! Taking you to your profile…', true);
+        setTimeout(() => (location.href = 'profile.html'), 700);
+      }).catch(() => say(otp, 'Could not verify the code. Try again.', false));
+    });
+    codeIn.addEventListener('input', () => { codeIn.value = codeIn.value.replace(/\D/g, '').slice(0, 6); });
+    resend.addEventListener('click', () => { say(otp, 'A new code is on its way.', true); begin(); });
+    $('[data-otp-change]', otp).addEventListener('click', () => { clearInterval(timer); show('phone'); });
   }
 
   /* ---------- Google sign-in ---------- */
