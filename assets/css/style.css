@@ -1313,3 +1313,6 @@ html.has-intro { overflow: hidden; }
 .pcard .rating { gap: 4px; }
 .pcard .rating b { color: var(--ink); font-weight: 800; }
 .pcard .rating .rc { color: var(--ink-soft); font-weight: 500; }
+/* Original (was) price: smaller, struck through */
+.pcard .price s { font-size: .8rem; font-weight: 500; text-decoration: line-through; text-decoration-thickness: 1px; margin-left: 8px; opacity: .85; }
+.pcard .price .now-off { font-size: 1rem; }
