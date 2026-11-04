@@ -1389,3 +1389,6 @@ html.has-intro { overflow: hidden; }
 .pd-info .rating .rc { font-weight: 500; }
 /* Product page: smaller "You might also like" heading */
 .section-head--sm h2 { font-size: clamp(1.4rem, 2.4vw, 1.9rem); letter-spacing: -.02em; }
+/* Tighter gaps between sections */
+.section { padding-block: clamp(44px, 6vw, 80px); }
+.section-head { margin-bottom: clamp(22px, 3vw, 36px); }
