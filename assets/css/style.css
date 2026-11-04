@@ -1374,3 +1374,7 @@ html.has-intro { overflow: hidden; }
 /* Empty states: no stroke on box or button */
 .empty { border: 0; }
 .empty .btn-hp { border-color: transparent; }
+/* Sticky filters: stay below the header and scroll inside, so lower filters are never hidden under the nav */
+@media (min-width: 992px) {
+  .filters { top: 176px; max-height: calc(100vh - 192px); overflow-y: auto; overscroll-behavior: contain; padding-right: 6px; scrollbar-width: thin; }
+}
