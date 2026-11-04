@@ -1363,3 +1363,8 @@ html.has-intro { overflow: hidden; }
 .wl .count b { font-size: 1.6rem; }
 .wl-empty { max-width: 560px; margin: 0 auto; }.pcard-art .badges { max-width: calc(100% - 58px); }
 .pcard-art .wish { width: 36px; height: 36px; top: 8px; right: 8px; }
+/* Centre heart glyphs exactly */
+.pcard-art .wish { display: flex; align-items: center; justify-content: center; padding: 0; }
+.pcard-art .wish i, .wish-link i, .wish-lg i { display: flex; align-items: center; justify-content: center; line-height: 1; }
+.pcard-art .wish i::before, .wish-link i::before, .wish-lg i::before { display: block; vertical-align: 0; line-height: 1; }
+.pcard-art .wish i { width: 100%; height: 100%; }
