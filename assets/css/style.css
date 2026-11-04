@@ -1378,3 +1378,7 @@ html.has-intro { overflow: hidden; }
 @media (min-width: 992px) {
   .filters { top: 176px; max-height: calc(100vh - 192px); overflow-y: auto; overscroll-behavior: contain; padding-right: 6px; scrollbar-width: thin; }
 }
+/* WhatsApp float: icon only (label kept for screen readers) */
+.wa { width: 58px; height: 58px; padding: 0; gap: 0; justify-content: center; }
+.wa i { font-size: 1.8rem; line-height: 1; }
+.wa .lbl { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
