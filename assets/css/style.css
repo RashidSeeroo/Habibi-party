@@ -1392,3 +1392,25 @@ html.has-intro { overflow: hidden; }
 /* Tighter gaps between sections */
 .section { padding-block: clamp(44px, 6vw, 80px); }
 .section-head { margin-bottom: clamp(22px, 3vw, 36px); }
+/* Product image: expand button + full-screen viewer */
+.pd-art.is-zoomable { cursor: zoom-in; }
+.pd-expand { position: absolute; right: 14px; bottom: 14px; z-index: 3; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 14px; border: 0; border-radius: 999px; background: rgba(255,255,255,.95); color: var(--grape); font-weight: 700; font-size: .9rem; box-shadow: 0 4px 14px rgba(43,11,63,.25); cursor: pointer; transition: transform .2s, background-color .2s; }
+.pd-expand:hover { transform: translateY(-1px); background: #fff; }
+.pd-expand:focus-visible { outline: 0; box-shadow: 0 0 0 4px rgba(245,43,145,.3); }
+html.lb-open { overflow: hidden; }
+.lb { position: fixed; inset: 0; z-index: 2000; display: flex; flex-direction: column; background: rgba(18,6,28,.94); color: #fff; }
+.lb[hidden] { display: none; }
+.lb-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px clamp(14px, 3vw, 28px); }
+.lb-title { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-tools { display: flex; align-items: center; gap: 8px; flex: none; }
+.lb-tools button { width: 44px; height: 44px; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgba(255,255,255,.12); color: #fff; font-size: 1.1rem; cursor: pointer; transition: background-color .2s; }
+.lb-tools button:hover { background: rgba(255,255,255,.24); }
+.lb-tools button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.lb-tools button i { display: block; line-height: 1; }
+.lb-zoom { min-width: 54px; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+.lb-stage { flex: 1; min-height: 0; display: grid; place-items: center; overflow: hidden; touch-action: none; cursor: zoom-in; user-select: none; }
+.lb.is-zoomed .lb-stage { cursor: grab; }
+.lb.is-zoomed .lb-stage:active { cursor: grabbing; }
+.lb-stage img { max-width: 100%; max-height: 100%; object-fit: contain; transform-origin: 50% 50%; will-change: transform; border-radius: 12px; }
+.lb-hint { margin: 0; padding: 10px 16px 16px; text-align: center; font-size: .82rem; color: rgba(255,255,255,.65); }
+@media (max-width: 575.98px) { .lb-hint { font-size: .75rem; } .lb-tools button { width: 40px; height: 40px; } }
