@@ -97,7 +97,7 @@
 
   const setHeading = () => {
     const title = $('[data-shop-title]');
-    if (state.q) title.textContent = `“${params.get('q') || state.q}”`;
+    if (state.q) title.textContent = `Results for “${params.get('q') || state.q}”`;
     else if (state.cats.size === 1) title.textContent = [...state.cats][0];
     else if (state.occs.size === 1) title.textContent = [...state.occs][0];
     else if (state.offer) title.textContent = 'Offers';
