@@ -1338,4 +1338,7 @@ html.has-intro { overflow: hidden; }
 .badge-hp--off { background: linear-gradient(135deg, #F52B91, #D81B60); color: #fff; }
 .badge-hp--pack { background: #fff; color: var(--grape); }
 .badge-hp--pack .bi { color: var(--pink); }.badge-hp { padding: 4px 9px; font-size: .68rem; gap: 4px; }
-.badges { left: 8px; top: 8px; gap: 5px; }
+.badges { left: 8px; top: 8px; gap: 5px; }.badge-hp--best { background: #fff; color: var(--grape); box-shadow: 0 3px 10px rgba(43,11,63,.28); }
+.badge-hp--best .bi { color: #F52B91; }
+.badge-hp--new .bi { color: #fff; }
+.badge-hp--pack { background: #FBEAF3; }
