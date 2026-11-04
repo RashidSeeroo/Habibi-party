@@ -1316,3 +1316,15 @@ html.has-intro { overflow: hidden; }
 /* Original (was) price: smaller, struck through */
 .pcard .price s { font-size: .8rem; font-weight: 500; text-decoration: line-through; text-decoration-thickness: 1px; margin-left: 8px; opacity: .85; }
 .pcard .price .now-off { font-size: 1rem; }
+/* Active filter chips */
+.active-filters { gap: 8px; align-items: center; margin-bottom: 16px; }
+.active-filters:empty { display: none; }
+.active-filters button { gap: 8px; border: 1.5px solid rgba(43,11,63,.18); background: #FBEAF3; color: var(--grape); padding: 6px 8px 6px 14px; font-weight: 700; font-size: .85rem; cursor: pointer; transition: background-color .2s, border-color .2s, color .2s, transform .2s; }
+.active-filters button .bi { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; background: rgba(43,11,63,.1); font-size: .6rem; transition: background-color .2s, color .2s; }
+.active-filters button:hover { border-color: var(--pink); background: #fff; transform: translateY(-1px); }
+.active-filters button:hover .bi { background: var(--pink); color: #fff; }
+.active-filters button:focus-visible { outline: 0; box-shadow: 0 0 0 4px rgba(245,43,145,.2); }
+.active-filters .af-clear { margin-left: 4px; padding: 6px 12px; border-color: transparent; background: transparent; color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+.active-filters .af-clear .bi { width: auto; height: auto; background: none; font-size: .9rem; }
+.active-filters .af-clear:hover { background: transparent; color: var(--pink); transform: none; }
+.active-filters .af-clear:hover .bi { background: none; color: var(--pink); }

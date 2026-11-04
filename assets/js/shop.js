@@ -67,6 +67,7 @@
     const b = e.target.closest('[data-chip]');
     if (!b) return;
     const [kind, val] = b.dataset.chip.split('|');
+    if (kind === 'all') return clearAll();
     if (kind === 'cat') state.cats.delete(val);
     if (kind === 'occ') state.occs.delete(val);
     if (kind === 'q') { state.q = ''; $('#q-top').value = ''; }
@@ -115,7 +116,8 @@
       state.q ? ['q', state.q, `“${state.q}”`] : null,
       state.offer ? ['offer', '1', 'On offer'] : null,
       state.max < 300 ? ['max', state.max, `Up to ${aed(state.max)}`] : null
-    ].filter(Boolean).map(([k, v, l]) => `<button type="button" data-chip="${k}|${v}" aria-label="Remove filter ${l}">${l} <i class="bi bi-x" aria-hidden="true"></i></button>`).join('');
+    ].filter(Boolean).map(([k, v, l]) => `<button type="button" data-chip="${k}|${v}" aria-label="Remove filter ${l}">${l}<i class="bi bi-x-lg" aria-hidden="true"></i></button>`).join('');
+    if (chips.children.length) chips.insertAdjacentHTML('beforeend', '<button type="button" class="af-clear" data-chip="all|"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>Clear all</button>');
 
     setHeading();
     if (!reduced && list.length) {
