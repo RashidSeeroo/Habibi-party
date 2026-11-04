@@ -88,15 +88,15 @@
           <p class="count m-0" role="status" aria-live="polite"><b data-result-count>0</b> products</p>
           <div class="d-flex gap-2 align-items-center flex-wrap">
             <button class="btn-hp btn-hp--ghost btn-hp--sm filter-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOff" aria-controls="filterOff"><i class="bi bi-sliders" aria-hidden="true"></i> Filters</button>
-            <label class="sort">Sort by
-              <select class="form-select" data-sort>
+            <div class="sort"><span id="sort-lbl">Sort by</span>
+              <select class="form-select" data-sort aria-labelledby="sort-lbl">
                 <option value="featured">Featured</option>
                 <option value="price-asc">Price: low to high</option>
                 <option value="price-desc">Price: high to low</option>
                 <option value="name">Name: A to Z</option>
                 <option value="new">Newest</option>
               </select>
-            </label>
+            </div>
           </div>
         </div>
         <div class="active-filters" data-active-filters></div>

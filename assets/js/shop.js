@@ -130,3 +130,42 @@
     waapi.animate($('[data-hero-mascot]'), { translateY: [60, 0], rotate: [8, 0], opacity: [0, 1], duration: 1100, ease: 'outBack(1.4)' });
   }
 })();
+
+/* Custom sort dropdown (native select stays as the source of truth) */
+(() => {
+  const sel = document.querySelector('[data-sort]');
+  if (!sel) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'sort-dd';
+  wrap.innerHTML = '<button type="button" class="sort-btn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="sort-lbl"><span></span></button><ul class="sort-menu" role="listbox" aria-labelledby="sort-lbl" tabindex="-1" hidden></ul>';
+  sel.after(wrap);
+  sel.classList.add('sort-native');
+  sel.tabIndex = -1; sel.setAttribute('aria-hidden', 'true');
+  const btn = wrap.querySelector('button'), menu = wrap.querySelector('ul');
+  menu.innerHTML = [...sel.options].map(o => `<li role="option" data-v="${o.value}"><i class="bi bi-check2" aria-hidden="true"></i>${o.textContent}</li>`).join('');
+  const items = [...menu.children];
+  let idx = 0;
+  const paint = () => {
+    btn.firstChild.textContent = sel.options[sel.selectedIndex].textContent;
+    items.forEach((li, i) => { li.setAttribute('aria-selected', String(li.dataset.v === sel.value)); li.classList.toggle('is-active', i === idx); });
+  };
+  const open = () => { idx = sel.selectedIndex; menu.hidden = false; btn.setAttribute('aria-expanded', 'true'); paint(); menu.focus(); };
+  const close = (focus = true) => { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); if (focus) btn.focus(); };
+  const pick = i => { if (sel.selectedIndex !== i) { sel.selectedIndex = i; sel.dispatchEvent(new Event('change', { bubbles: true })); } paint(); close(); };
+  btn.addEventListener('click', () => (menu.hidden ? open() : close()));
+  menu.addEventListener('click', e => { const li = e.target.closest('li'); if (li) pick(items.indexOf(li)); });
+  menu.addEventListener('mousemove', e => { const li = e.target.closest('li'); if (li) { idx = items.indexOf(li); paint(); } });
+  menu.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') { idx = Math.min(items.length - 1, idx + 1); paint(); e.preventDefault(); }
+    else if (e.key === 'ArrowUp') { idx = Math.max(0, idx - 1); paint(); e.preventDefault(); }
+    else if (e.key === 'Home') { idx = 0; paint(); e.preventDefault(); }
+    else if (e.key === 'End') { idx = items.length - 1; paint(); e.preventDefault(); }
+    else if (e.key === 'Enter' || e.key === ' ') { pick(idx); e.preventDefault(); }
+    else if (e.key === 'Escape') { close(); e.preventDefault(); }
+    else if (e.key === 'Tab') close(false);
+  });
+  btn.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { open(); e.preventDefault(); } });
+  document.addEventListener('click', e => { if (!wrap.contains(e.target) && !menu.hidden) close(false); });
+  sel.addEventListener('change', paint);
+  paint();
+})();
