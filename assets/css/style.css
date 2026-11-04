@@ -1271,3 +1271,7 @@ html.has-intro { overflow: hidden; }
 .otp-resend{margin:14px 0 0;text-align:center}.otp-terms{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;font-size:.9rem;color:var(--ink-soft);cursor:pointer}
 .otp-terms input{flex:none;width:20px;height:20px;margin-top:2px;accent-color:var(--grape)}
 .otp-terms a{color:var(--grape);font-weight:700}
+/* Whole product card is clickable (stretched link); quick-add stays on top */
+.pcard { position: relative; cursor: pointer; }
+.pcard h3 a::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: var(--radius); }
+.pcard .badges { pointer-events: none; }
