@@ -1309,3 +1309,12 @@ html.has-intro { overflow: hidden; }
 @keyframes sortIn { from { opacity: 0; transform: translateY(-6px) scale(.97); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .sort-menu { animation: none; } }
 @media (max-width: 575.98px) { .sort-btn { min-width: 160px; } }
+/* Compact filters */
+.filters { top: 150px; font-size: .92rem; }
+.filters h2 { font-size: 1.25rem; margin-bottom: 4px; }
+.fgroup { border-top-width: 1.5px; padding-block: 10px; }
+.fgroup h3 { font-size: .9rem; margin-bottom: 6px; }
+.check { gap: 9px; padding: 2px 0; font-weight: 600; font-size: .92rem; }
+.check input { width: 18px; height: 18px; border-width: 1.5px; border-radius: 5px; }
+.check input:checked::after { width: 8px; height: 5px; border-width: 2px; }
+.check .ct { font-size: .78rem; }
