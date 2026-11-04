@@ -17,10 +17,10 @@
   HP.card = p => {
     const off = p.was ? Math.round((1 - p.price / p.was) * 100) : 0;
     const badges = [
-      p.badge && p.badge !== 'New' ? `<span class="badge-hp">${p.badge}</span>` : '',
-      p.isNew ? '<span class="badge-hp badge-hp--new">New</span>' : '',
+      p.badge && p.badge !== 'New' ? `<span class="badge-hp badge-hp--best"><i class="bi bi-fire" aria-hidden="true"></i>${p.badge}</span>` : '',
+      p.isNew ? '<span class="badge-hp badge-hp--new"><i class="bi bi-stars" aria-hidden="true"></i>New</span>' : '',
       off ? `<span class="badge-hp badge-hp--off">-${off}%</span>` : '',
-      p.isPack ? '<span class="badge-hp">Habibi Rescue</span>' : ''
+      p.isPack ? '<span class="badge-hp badge-hp--pack"><i class="bi bi-life-preserver" aria-hidden="true"></i>Habibi Rescue</span>' : ''
     ].join('');
     const art = p.img ? `<img class="photo" src="${p.img}" alt="" loading="lazy" width="460" height="460">` : svg(p.icon);
     const rating = p.reviews

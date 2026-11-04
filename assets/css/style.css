@@ -1328,3 +1328,14 @@ html.has-intro { overflow: hidden; }
 .active-filters .af-clear .bi { width: auto; height: auto; background: none; font-size: .9rem; }
 .active-filters .af-clear:hover { background: transparent; color: var(--pink); transform: none; }
 .active-filters .af-clear:hover .bi { background: none; color: var(--pink); }
+/* Product badges */
+.badges { left: 10px; top: 10px; gap: 6px; }
+.badge-hp { display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px; border: 0; border-radius: 999px; font-size: .72rem; font-weight: 800; letter-spacing: .02em; line-height: 1.2; background: #fff; color: var(--grape); box-shadow: 0 3px 10px rgba(43,11,63,.2); backdrop-filter: blur(4px); }
+.badge-hp .bi { font-size: .8rem; }
+.badge-hp--best { background: linear-gradient(135deg, #FFD54A, #FFB020); color: #4A2A00; }
+.badge-hp--new { background: linear-gradient(135deg, #6B3FA0, #2B0B3F); color: #fff; }
+.badge-hp--new .bi { color: #FFD54A; }
+.badge-hp--off { background: linear-gradient(135deg, #F52B91, #D81B60); color: #fff; }
+.badge-hp--pack { background: #fff; color: var(--grape); }
+.badge-hp--pack .bi { color: var(--pink); }.badge-hp { padding: 4px 9px; font-size: .68rem; gap: 4px; }
+.badges { left: 8px; top: 8px; gap: 5px; }
