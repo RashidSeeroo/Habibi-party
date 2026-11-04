@@ -1309,3 +1309,7 @@ html.has-intro { overflow: hidden; }
 @keyframes sortIn { from { opacity: 0; transform: translateY(-6px) scale(.97); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .sort-menu { animation: none; } }
 @media (max-width: 575.98px) { .sort-btn { min-width: 160px; } }
+/* Rating: ★ 4.8 (214) */
+.pcard .rating { gap: 4px; }
+.pcard .rating b { color: var(--ink); font-weight: 800; }
+.pcard .rating .rc { color: var(--ink-soft); font-weight: 500; }

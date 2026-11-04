@@ -24,7 +24,7 @@
     ].join('');
     const art = p.img ? `<img class="photo" src="${p.img}" alt="" loading="lazy" width="460" height="460">` : svg(p.icon);
     const rating = p.reviews
-      ? `<p class="rating"><i class="bi bi-star-fill" aria-hidden="true"></i>${p.rating} &middot; ${p.reviews} reviews</p>`
+      ? `<p class="rating" aria-label="Rated ${p.rating} out of 5 from ${p.reviews} reviews"><i class="bi bi-star-fill" aria-hidden="true"></i><b>${p.rating}</b><span class="rc" aria-hidden="true">(${p.reviews})</span></p>`
       : '<p class="rating"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>Same-day in Dubai</p>';
     const price = p.was
       ? `<span class="now-off">${aed(p.price)}</span><s>${aed(p.was)}</s>`
