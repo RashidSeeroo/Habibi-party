@@ -240,7 +240,9 @@
       pd.innerHTML = `
         <div class="pd-art" style="--tone:var(--${p.tone || 'blush'})">${art}${off ? `<span class="badge-hp badge-hp--off">-${off}%</span>` : ''}</div>
         <div class="pd-info">
-          <p class="rating"><i class="bi bi-star-fill" aria-hidden="true"></i>${p.reviews ? `${p.rating} · ${p.reviews} reviews` : 'Same-day in Dubai'}</p>
+          ${p.reviews
+            ? `<p class="rating" aria-label="Rated ${p.rating} out of 5 from ${p.reviews} reviews"><i class="bi bi-star-fill" aria-hidden="true"></i><b>${p.rating}</b><span class="rc" aria-hidden="true">(${p.reviews})</span></p>`
+            : '<p class="rating"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>Same-day in Dubai</p>'}
           <h2>${esc(p.name)}</h2>
           <p class="pd-price">${p.was ? `<span class="now-off">${aed(p.price)}</span> <s>${aed(p.was)}</s>` : aed(p.price)}</p>
           <p class="pd-lead">A party favourite from our ${esc(p.cat.toLowerCase())} range${p.occ ? `, perfect for ${esc(p.occ.slice(0, 3).join(', ').toLowerCase())}` : ''}.</p>
