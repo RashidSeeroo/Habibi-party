@@ -137,7 +137,7 @@
   let basket = load();
 
   const renderBasket = (bump = false) => {
-    const qty = basket.reduce((n, i) => n + i.qty, 0);
+    const qty = basket.length; // badge counts distinct products, not units
     const total = basket.reduce((n, i) => n + i.qty * i.price, 0);
     $$('[data-basket-count]').forEach(el => {
       el.textContent = qty;
@@ -160,9 +160,9 @@
     if (found) found.qty += 1;
     else basket.push({ id: item.id, name: item.name, price: item.price, img: item.img, icon: item.icon, tone: item.tone, qty: 1 });
     save(basket);
-    renderBasket(true);
+    renderBasket(!found);
     HP.confetti(originEl);
-    HP.toast(`${item.name} added to your basket`);
+    HP.toast(found ? `${item.name} added again (${found.qty} in your basket)` : `${item.name} added to your basket`);
   };
 
   document.addEventListener('click', e => {
