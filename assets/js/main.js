@@ -14,6 +14,44 @@
   const allItems = [...HP.products, ...HP.packs];
   HP.find = id => allItems.find(p => p.id === id);
 
+  /* ---------- Wishlist (favourites) ---------- */
+  const WKEY = 'hp-wish';
+  const wLoad = () => { try { const w = JSON.parse(localStorage.getItem(WKEY)); return Array.isArray(w) ? w : []; } catch { return []; } };
+  let wish = wLoad();
+  const wSave = () => { try { localStorage.setItem(WKEY, JSON.stringify(wish)); } catch {} };
+  HP.wish = {
+    get: () => wish.slice(),
+    has: id => wish.includes(id),
+    toggle(id) { wish = wish.includes(id) ? wish.filter(x => x !== id) : [id, ...wish]; wSave(); paintWish(); document.dispatchEvent(new CustomEvent('hp:wish', { detail: { id } })); return wish.includes(id); },
+    clear() { wish = []; wSave(); paintWish(); document.dispatchEvent(new CustomEvent('hp:wish')); }
+  };
+  const paintWish = () => {
+    $$('[data-wish]').forEach(b => {
+      const on = wish.includes(b.dataset.wish), name = (HP.find(b.dataset.wish) || {}).name || 'product';
+      b.setAttribute('aria-pressed', String(on));
+      b.setAttribute('aria-label', `${on ? 'Remove' : 'Save'} ${name} ${on ? 'from' : 'to'} wishlist`);
+      const i = $('i', b); if (i) i.className = on ? 'bi bi-heart-fill' : 'bi bi-heart';
+      const l = $('.lbl', b); if (l) l.textContent = on ? 'Saved' : 'Save';
+    });
+    $$('[data-wish-count]').forEach(el => { el.textContent = wish.length; el.hidden = !wish.length; });
+  };
+  HP.paintWish = paintWish;
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-wish]');
+    if (!b) return;
+    e.preventDefault();
+    const item = HP.find(b.dataset.wish);
+    const on = HP.wish.toggle(b.dataset.wish);
+    if (on && !reduced) waapi.animate(b, { scale: [1, 1.3, 1], duration: 420, ease: 'outBack' });
+    if (item && HP.toast) HP.toast(on ? `${item.name} saved to your wishlist` : `${item.name} removed from your wishlist`);
+  });
+  window.addEventListener('storage', e => { if (e.key === WKEY) { wish = wLoad(); paintWish(); document.dispatchEvent(new CustomEvent('hp:wish')); } });
+  (() => {
+    const first = $('.header-actions a[href="account.html"], .header-actions a[href="profile.html"]');
+    if (!first) return;
+    first.insertAdjacentHTML('beforebegin', '<a class="icon-btn wish-link" href="wishlist.html" aria-label="Wishlist"><i class="bi bi-heart" aria-hidden="true"></i><span class="lbl">Wishlist</span><span class="wish-count" data-wish-count hidden>0</span></a>');
+  })();
+
   HP.card = p => {
     const off = p.was ? Math.round((1 - p.price / p.was) * 100) : 0;
     const badges = [
@@ -31,7 +69,8 @@
       : aed(p.price);
     return `<article class="pcard">
       <div class="pcard-art" style="--tone:var(--${p.tone || 'blush'})">
-        <span class="badges">${badges}</span>${art}
+        <span class="badges">${badges}</span>
+        <button class="wish" type="button" data-wish="${p.id}" aria-pressed="${HP.wish.has(p.id)}" aria-label="${HP.wish.has(p.id) ? 'Remove' : 'Save'} ${p.name} ${HP.wish.has(p.id) ? 'from' : 'to'} wishlist"><i class="bi ${HP.wish.has(p.id) ? 'bi-heart-fill' : 'bi-heart'}" aria-hidden="true"></i></button>${art}
         <button class="quick-add" type="button" data-add="${p.id}" aria-label="Add ${p.name} to basket"><i class="bi bi-plus-lg" aria-hidden="true"></i><span class="lbl">Quick add</span></button>
       </div>
       ${rating}
@@ -179,6 +218,7 @@
     }
   });
   renderBasket();
+  paintWish();
   HP.basket = { get: () => basket, set: b => { basket = b; save(basket); renderBasket(); } };
 
   /* ---------- Reveals ---------- */

@@ -1342,3 +1342,24 @@ html.has-intro { overflow: hidden; }
 .badge-hp--best .bi { color: #F52B91; }
 .badge-hp--new .bi { color: #fff; }
 .badge-hp--pack { background: #FBEAF3; }
+/* Wishlist: heart on cards, header icon, product-page button, page */
+.pcard-art .wish { position: absolute; top: 10px; right: 10px; z-index: 3; width: 38px; height: 38px; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgba(255,255,255,.95); color: var(--grape); box-shadow: 0 3px 10px rgba(43,11,63,.22); cursor: pointer; transition: transform .2s, color .2s, background-color .2s; }
+.pcard-art .wish i { font-size: 1.05rem; line-height: 1; }
+.pcard-art .wish:hover { transform: scale(1.08); color: var(--pink); }
+.pcard-art .wish[aria-pressed="true"] { color: #fff; background: var(--pink); }
+.wish:focus-visible, .wish-lg:focus-visible { outline: 0; box-shadow: 0 0 0 4px rgba(245,43,145,.3); }
+.wish-link { position: relative; }
+.wish-count { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; display: grid; place-items: center; border-radius: 999px; background: var(--pink); color: #fff; font-size: .7rem; font-weight: 800; line-height: 1; }
+.wish-count[hidden] { display: none; }
+.wish-lg { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 18px; border: 1.5px solid rgba(43,11,63,.22); border-radius: 999px; background: #fff; color: var(--grape); font-weight: 700; cursor: pointer; transition: border-color .2s, color .2s, background-color .2s; }
+.wish-lg:hover { border-color: var(--pink); color: var(--pink); }
+.wish-lg[aria-pressed="true"] { background: #FBEAF3; border-color: var(--pink); color: var(--pink); }
+.wl-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-bottom: 16px; margin-bottom: 24px; border-bottom: 1.5px solid rgba(43,11,63,.15); }
+.wl-bar[hidden], .wl-empty[hidden] { display: none; }
+.wl-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.wl-clear { background: none; border: 0; padding: 0; color: var(--ink-soft); font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.wl-clear:hover { color: var(--pink); }
+.wl .count { font-size: 1.1rem; }
+.wl .count b { font-size: 1.6rem; }
+.wl-empty { max-width: 560px; margin: 0 auto; }.pcard-art .badges { max-width: calc(100% - 58px); }
+.pcard-art .wish { width: 36px; height: 36px; top: 8px; right: 8px; }

@@ -247,6 +247,7 @@
           <div class="pd-buy">
             <div class="qty" role="group" aria-label="Quantity"><button type="button" data-q="-1" aria-label="Fewer">&minus;</button><output data-qty>1</output><button type="button" data-q="1" aria-label="More">+</button></div>
             <button class="btn-hp" type="button" data-pd-add><i class="bi bi-bag-heart" aria-hidden="true"></i> Add to basket</button>
+            <button class="wish-lg" type="button" data-wish="${p.id}" aria-pressed="false"><i class="bi bi-heart" aria-hidden="true"></i><span class="lbl">Save</span></button>
           </div>
           <ul class="ticks-list">
             <li>Order before 4pm for same-day delivery in Dubai</li>
@@ -255,6 +256,7 @@
           </ul>
           <p class="small" style="color:var(--ink-soft)">Need a bigger quantity? <a href="wholesale.html#quote">Ask for a wholesale quote</a>.</p>
         </div>`;
+      HP.paintWish && HP.paintWish();
       let qty = 1;
       const out = $('[data-qty]', pd);
       pd.addEventListener('click', e => {
