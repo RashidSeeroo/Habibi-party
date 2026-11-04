@@ -1371,3 +1371,6 @@ html.has-intro { overflow: hidden; }
 /* Breadcrumbs: no underline */
 .crumbs a, .crumbs a:hover, .crumbs a:focus { text-decoration: none; }
 .crumbs a:hover { opacity: .85; }
+/* Empty states: no stroke on box or button */
+.empty { border: 0; }
+.empty .btn-hp { border-color: transparent; }
