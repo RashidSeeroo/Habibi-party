@@ -1275,3 +1275,9 @@ html.has-intro { overflow: hidden; }
 .pcard { position: relative; cursor: pointer; }
 .pcard h3 a::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: var(--radius); }
 .pcard .badges { pointer-events: none; }
+/* Slimmer page banners */
+.page-hero { padding-block: clamp(14px, 2vw, 24px); }
+.page-hero h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); }
+.page-hero p { font-size: .95rem; margin-top: 4px; }
+.page-hero .crumbs { font-size: .85rem; margin-bottom: 4px; }
+.page-hero img { width: clamp(64px, 7vw, 92px); margin-bottom: -16px; }
