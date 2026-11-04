@@ -1387,3 +1387,5 @@ html.has-intro { overflow: hidden; }
 .pd-info .rating .bi { color: var(--pink); }
 .pd-info .rating b { color: var(--ink); font-weight: 800; }
 .pd-info .rating .rc { font-weight: 500; }
+/* Product page: smaller "You might also like" heading */
+.section-head--sm h2 { font-size: clamp(1.4rem, 2.4vw, 1.9rem); letter-spacing: -.02em; }
