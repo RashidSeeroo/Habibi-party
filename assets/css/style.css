@@ -1370,3 +1370,6 @@ html.has-intro { overflow: hidden; }
 .pcard-art .wish i { width: 100%; height: 100%; }
 /* Wishlist empty state: no dashed border */
 .wl-empty { border: 0; }
+/* Breadcrumbs: no underline */
+.crumbs a, .crumbs a:hover, .crumbs a:focus { text-decoration: none; }
+.crumbs a:hover { opacity: .85; }
