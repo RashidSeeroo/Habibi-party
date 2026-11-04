@@ -1368,3 +1368,5 @@ html.has-intro { overflow: hidden; }
 .pcard-art .wish i, .wish-link i, .wish-lg i { display: flex; align-items: center; justify-content: center; line-height: 1; }
 .pcard-art .wish i::before, .wish-link i::before, .wish-lg i::before { display: block; vertical-align: 0; line-height: 1; }
 .pcard-art .wish i { width: 100%; height: 100%; }
+/* Wishlist empty state: no dashed border */
+.wl-empty { border: 0; }
