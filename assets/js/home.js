@@ -50,7 +50,7 @@
         <img src="${p.img}" alt="${p.name} Habibi Rescue party pack" width="460" height="460" loading="lazy">
         <button class="add-fab" type="button" data-add="${p.id}" aria-label="Add ${p.name} pack to basket"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>
       </div>
-      <div class="pack-meta"><h3>${p.name}</h3><span class="price">${aed(p.price)}</span></div>
+      <div class="pack-meta"><h3><a href="product.html?id=${p.id}">${p.name}</a></h3><span class="price">${aed(p.price)}</span></div>
     </article>`).join('');
   $('[data-featured]').innerHTML = HP.products.slice(0, 8).map(HP.card).join('');
   HP.onEnter([$('[data-packs]')], el => HP.reveal(el, [...el.children]));

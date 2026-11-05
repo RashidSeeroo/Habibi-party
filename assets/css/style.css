@@ -1429,3 +1429,9 @@ html.lb-open { overflow: hidden; }
 /* Bundle next button: keep the full circle inside the rounded corner */
 .b-notch--next { padding: 10px 10px 10px 10px; border-top-left-radius: 30px; }
 .b-next { flex: none; aspect-ratio: 1; }
+
+/* Whole pack tile is clickable; quick-add stays on top */
+.pack { cursor: pointer; }
+.pack-meta h3 a { color: inherit; text-decoration: none; }
+.pack-meta h3 a::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: var(--radius); }
+.pack .add-fab { z-index: 2; }
