@@ -1414,3 +1414,14 @@ html.lb-open { overflow: hidden; }
 .lb-stage img { max-width: 100%; max-height: 100%; object-fit: contain; transform-origin: 50% 50%; will-change: transform; border-radius: 12px; }
 .lb-hint { margin: 0; padding: 10px 16px 16px; text-align: center; font-size: .82rem; color: rgba(255,255,255,.65); }
 @media (max-width: 575.98px) { .lb-hint { font-size: .75rem; } .lb-tools button { width: 40px; height: 40px; } }
+/* Styled setups page + setup name caption */
+.su-grid { display: grid; gap: 28px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.su-card { background: #fff; border: 2px solid var(--ink); border-radius: 22px; overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+.su-art img { display: block; width: 100%; aspect-ratio: 3 / 1.5; object-fit: cover; }
+.su-body { padding: 20px 22px 24px; display: grid; gap: 14px; }
+.su-body h2 { margin: 0; font-size: 1.3rem; }
+.su-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.su-list li { display: flex; justify-content: space-between; gap: 12px; color: var(--ink-soft); }
+.su-list b { color: var(--ink); }
+@media (max-width: 767.98px) { .su-grid { grid-template-columns: 1fr; } }
+.look-name { position: absolute; left: 14px; bottom: 14px; z-index: 2; margin: 0; padding: 7px 14px; border-radius: 999px; background: rgba(43,11,63,.88); color: #fff; font-weight: 700; font-size: .92rem; pointer-events: none; }

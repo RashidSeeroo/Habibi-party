@@ -249,6 +249,24 @@
   HP.onEnter($$('[data-reveal]'), el => HP.reveal(el));
   HP.onEnter($$('[data-reveal-group]'), el => HP.reveal(el, [...el.children]));
 
+  /* ---------- Anchor links land under the sticky header ---------- */
+  const hashTarget = () => { try { return location.hash.length > 1 ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null; } catch (e) { return null; } };
+  const toHash = () => {
+    const t = hashTarget();
+    if (!t) return;
+    const head = $('.site-header');
+    const y = t.getBoundingClientRect().top + scrollY - (head ? head.offsetHeight : 0) - 16;
+    scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+  };
+  if (hashTarget()) {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    toHash();
+    addEventListener('load', toHash);
+    setTimeout(toHash, 400);
+    setTimeout(toHash, 1200);
+  }
+  addEventListener('hashchange', toHash);
+
   /* ---------- Counters ---------- */
   HP.countUp = el => {
     const end = +el.dataset.countTo;

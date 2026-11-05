@@ -88,11 +88,11 @@
   const bundles = $('[data-bundles]');
   if (bundles) {
     const THEMES = [
-      { bg: '#FFB3D4', a: '#F52B91', d: '#C2146B', l: '#FF7FB9', kick: 'Cake, candles, confetti', title: 'Pink Party Collection' },
-      { bg: '#72D3EC', a: '#2FA7D6', d: '#1B7FA8', l: '#5CC4E6', kick: 'Adorable beginning bash', title: 'Blue Bash Collection' },
+      { bg: '#9FE6D6', a: '#17A58B', d: '#0E7A66', l: '#4FCDB5', kick: 'Cake, candles, confetti', title: 'Birthday Bash Collection' },
+      { bg: '#FFD3BA', a: '#F2895A', d: '#C4592B', l: '#F7AE88', kick: 'Adorable beginning bash', title: 'Baby Shower Collection' },
       { bg: '#CBB4F5', a: '#6E3FC4', d: '#4A2397', l: '#9B74E6', kick: 'Cap, toss, celebrate', title: 'Grad Night Collection' },
-      { bg: '#FCDDEB', a: '#F77FB0', d: '#46A9E6', l: '#8FD0F5', kick: 'The sweetest surprise', title: 'Boy or Girl Collection' },
-      { bg: '#BDEBC8', a: '#2FB36D', d: '#168A50', l: '#6CD398', kick: 'Sunshine and snacks', title: 'Sunny Picnic Collection' },
+      { bg: '#FCDDEB', a: '#F77FB0', d: '#46A9E6', l: '#8FD0F5', kick: 'The sweetest surprise', title: 'Boy or Girl Collection', html: '<b style="color:#2F9BE0">Boy</b> or <b style="color:#F0508F">Girl</b> Collection' },
+      { bg: '#FFC9B5', a: '#E8553D', d: '#B33621', l: '#FF8F78', kick: 'Sunshine and snacks', title: 'Sunny Picnic Collection' },
       { bg: '#F9C7E8', a: '#D63AB0', d: '#9C1F82', l: '#EC7BD0', kick: 'Last fling before the ring', title: 'Bride Tribe Collection' },
       { bg: '#FFE08A', a: '#E8A60E', d: '#B97A00', l: '#FFC83D', kick: 'Elegant evenings', title: 'Golden Table Collection' }
     ];
@@ -107,7 +107,7 @@
       links.forEach((a, n) => a.classList.toggle('is-on', n === cur));
       $$('.scene', stage).forEach((sc, n) => sc.classList.toggle('is-on', n === cur));
       const [first, ...rest] = t.title.split(' ');
-      titleEl.innerHTML = `<b>${first}</b> ${rest.join(' ')}`;
+      titleEl.innerHTML = t.html || `<b>${first}</b> ${rest.join(' ')}`;
       kickEl.textContent = t.kick;
       shop.href = links[cur].href;
       if (reduced || !animateIn) return;
@@ -172,7 +172,7 @@
     const over = current.budget && current.total > current.budget;
     fitEl.className = 'fit ' + (over ? 'over' : 'ok');
     fitEl.textContent = !current.budget ? 'no budget limit set'
-      : over ? `${aed(current.total - current.budget)} over budget, we will suggest swaps`
+      : over ? `${aed(current.total - current.budget)} over budget. Try fewer guests or a higher budget`
       : `fits your ${aed(current.budget)} budget`;
 
     if (reduced || !animateIn) {
@@ -216,7 +216,7 @@
     const l = HP.looks[look];
     const total = l.spots.reduce((n, s) => n + s.price, 0);
     stage.setAttribute('aria-labelledby', `look-tab-${look}`);
-    stage.innerHTML = `<img src="${l.img}" alt="${l.label}" width="1500" height="500">` +
+    stage.innerHTML = `<img src="${l.img}" alt="${l.label}" width="1500" height="500"><span class="look-name">${l.label}</span>` +
       l.spots.map((s, i) => `<button class="spot" type="button" style="--x:${s.x}%;--y:${s.y}%" aria-pressed="false" data-spot="${i}" aria-label="${i + 1}: ${s.name}, ${aed(s.price)}"><span class="dot">${i + 1}</span></button>`).join('');
     list.innerHTML = l.spots.map((s, i) => `<li data-spot="${i}"><span class="n">${i + 1}</span><span>${s.name}</span><span class="p">${aed(s.price)}</span></li>`).join('');
     lookBtn.textContent = `Shop this setup \u2014 ${aed(total)}`;
