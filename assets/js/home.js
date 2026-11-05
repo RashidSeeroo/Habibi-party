@@ -48,7 +48,7 @@
     <article class="pack">
       <div class="pack-photo">
         <img src="${p.img}" alt="${p.name} Habibi Rescue party pack" width="460" height="460" loading="lazy">
-        <button class="add-fab" type="button" data-add="${p.id}" aria-label="Add ${p.name} pack to basket"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>
+        <a class="pack-photo-link" href="product.html?id=${p.id}" tabindex="-1" aria-hidden="true"></a><button class="add-fab" type="button" data-add="${p.id}" aria-label="Add ${p.name} pack to basket"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>
       </div>
       <div class="pack-meta"><h3><a href="product.html?id=${p.id}">${p.name}</a></h3><span class="price">${aed(p.price)}</span></div>
     </article>`).join('');
