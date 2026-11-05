@@ -1425,3 +1425,7 @@ html.lb-open { overflow: hidden; }
 .su-list b { color: var(--ink); }
 @media (max-width: 767.98px) { .su-grid { grid-template-columns: 1fr; } }
 .look-name { position: absolute; left: 14px; bottom: 14px; z-index: 2; margin: 0; padding: 7px 14px; border-radius: 999px; background: rgba(43,11,63,.88); color: #fff; font-weight: 700; font-size: .92rem; pointer-events: none; }
+
+/* Bundle next button: keep the full circle inside the rounded corner */
+.b-notch--next { padding: 10px 10px 10px 10px; border-top-left-radius: 30px; }
+.b-next { flex: none; aspect-ratio: 1; }
