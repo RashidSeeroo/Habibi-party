@@ -218,7 +218,7 @@
     const a = IDEAS[i];
     document.title = `${a.t} | Habibi Party`;
     $('#page-title').textContent = a.t;
-    $('.page-hero p').textContent = a.tag + ' from the Habibi Party team';
+    
     $('.crumbs').innerHTML = '<a href="index.html">Home</a> / <a href="ideas.html">Ideas</a> / <span aria-current="page">' + esc(a.tag) + '</span>';
     article.insertAdjacentHTML('beforeend', `<img class="article-img" src="assets/img/products/${a.img}.jpg" alt="" width="900" height="600">` + a.body.map(p => `<p>${esc(p)}</p>`).join('') +
       `<div class="cta-band mt-4"><div><h2>Ready to shop the look?</h2><p class="m-0">Everything for this party is in stock.</p></div><a class="btn-hp btn-hp--sun" href="shop.html">Shop all products</a></div>`);
@@ -233,7 +233,6 @@
     } else {
       document.title = `${p.name} | Habibi Party`;
       $('#page-title').textContent = p.name;
-      $('.page-hero p').textContent = `${p.cat} · same-day delivery in Dubai`;
       $('.crumbs').innerHTML = `<a href="index.html">Home</a> / <a href="shop.html">Shop</a> / <a href="shop.html?cat=${encodeURIComponent(p.cat)}">${esc(p.cat)}</a>`;
       const off = p.was ? Math.round((1 - p.price / p.was) * 100) : 0;
       const art = p.img ? `<img src="${p.img}" alt="${esc(p.name)}" width="800" height="800">` : HP.svg(p.icon, 220);
