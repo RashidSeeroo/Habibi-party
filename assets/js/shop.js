@@ -79,7 +79,8 @@
   const realCat = () => state.cats.size === 1 && PRODUCT_CATS.has([...state.cats][0]);
   const catHit = p => !state.cats.size || [...state.cats].some(c => (PRODUCT_CATS.has(c) ? p.cat === c : hay(p).includes(stem(c))));
   const subHit = p => !state.sub || !realCat() || p.sub === state.sub;
-  const itemHit = p => !state.item || ((p.items || []).includes(state.item) || p.name.toLowerCase().includes(state.item.toLowerCase()));
+  const hasItem = (p, i) => (p.items || []).includes(i) || p.name.toLowerCase().includes(i.toLowerCase());
+  const itemHit = p => !state.item || hasItem(p, state.item);
   const matHit = p => !state.material || p.material === state.material;
   const inScope = p => catHit(p) && subHit(p) && itemHit(p) && matHit(p);
   const resetBalloon = () => { state.sub = ''; state.item = ''; state.material = ''; };
@@ -98,8 +99,14 @@
       const sw = `<span class="cf-sw${COLOURS[c] === 'multi' ? ' is-multi' : ''}" style="${COLOURS[c] === 'multi' ? '' : `background:${COLOURS[c]}`}"></span>`;
       return `<div class="${n || state.colours.has(c) ? '' : 'is-empty'}">${row('colour', c, c, state.colours.has(c), n, sw)}</div>`;
     }).join('');
+    const curSub = curTree().find(x => x.name === state.sub);
+    const inSub = items.filter(p => catHit(p) && subHit(p));
+    const subGroup = curSub && curSub.items.length
+      ? group(curSub.name, curSub.items.map(i => row('item', i, i, state.item === i, inSub.filter(p => hasItem(p, i)).length)).join(''))
+      : '';
     return `
     <div class="cf">
+      ${subGroup}
       ${group('Colour', colours)}
       ${shapeList.length ? group('Shape', shapeList.map(s => row('shape', s, s, state.shapes.has(s), scope.filter(p => p.shape === s).length, `<span class="cf-glyph" aria-hidden="true">${SHAPES[s]}</span>`)).join('')) : ''}
       ${sizeList.length ? group('Size', sizeList.map(s => row('size', s, s, state.sizes.has(s), scope.filter(p => p.size === s).length)).join('')) : ''}
@@ -127,6 +134,7 @@
       t.checked ? set.add(t.value) : set.delete(t.value);
     }
     if (t.name === 'offer' || t.name === 'instock' || t.name === 'sameday') state[t.name] = t.checked;
+    if (t.name === 'item') { state.item = t.checked ? t.value : ''; panel.innerHTML = filtersHtml(); }
     render();
   });
   $('[data-sort]').addEventListener('change', e => { state.sort = e.target.value; render(); });
