@@ -1639,5 +1639,5 @@ html.lb-open { overflow: hidden; }
 /* Bundle list: tighter spacing (desktop) */
 @media (min-width: 768px) {
   .b-list { gap: 0; }
-  .b-list a { padding: 5px 0; line-height: 1.25; }
+  .b-list a { padding: 8px 0; line-height: 1.25; }
 }
