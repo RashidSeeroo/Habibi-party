@@ -67,15 +67,15 @@
   const isBalloons = () => state.cats.has('Balloons');
   const resetBalloon = () => { state.sub = ''; state.item = ''; state.material = ''; };
 
-  const shapeList = Object.keys(SHAPES).filter(s => items.some(p => p.shape === s));
-  const sizeList = SIZES.filter(s => items.some(p => p.size === s));
-
+  
   const group = (title, body, open = true) => `<details class="cf-group"${open ? ' open' : ''}><summary>${title}</summary><div class="cf-body">${body}</div></details>`;
   const row = (name, value, label, on, ct, lead = '') => `
       <label class="check"><input type="checkbox" name="${name}" value="${value}" ${on ? 'checked' : ''}>${lead}<span class="cf-name">${label}</span>${ct === '' ? '' : `<span class="ct">${ct}</span>`}</label>`;
 
   const filtersHtml = () => {
-    const scope = items.filter(p => !state.cats.size || state.cats.has(p.cat));
+    const scope = items.filter(p => (!state.cats.size || state.cats.has(p.cat)) && (!state.sub || p.sub === state.sub) && (!state.item || (p.items || []).includes(state.item)) && (!state.material || p.material === state.material));
+    const shapeList = Object.keys(SHAPES).filter(s => scope.some(p => p.shape === s));
+    const sizeList = SIZES.filter(s => scope.some(p => p.size === s));
     const colours = Object.keys(COLOURS).map(c => {
       const n = scope.filter(p => p.colour.includes(c)).length;
       const sw = `<span class="cf-sw${COLOURS[c] === 'multi' ? ' is-multi' : ''}" style="${COLOURS[c] === 'multi' ? '' : `background:${COLOURS[c]}`}"></span>`;
@@ -84,11 +84,11 @@
     return `
     <div class="cf">
       ${group('Colour', colours)}
-      ${shapeList.length ? group('Shape', shapeList.map(s => row('shape', s, s, state.shapes.has(s), count(p => p.shape === s), `<span class="cf-glyph" aria-hidden="true">${SHAPES[s]}</span>`)).join('')) : ''}
-      ${sizeList.length ? group('Size', sizeList.map(s => row('size', s, s, state.sizes.has(s), count(p => p.size === s))).join('')) : ''}
+      ${shapeList.length ? group('Shape', shapeList.map(s => row('shape', s, s, state.shapes.has(s), scope.filter(p => p.shape === s).length, `<span class="cf-glyph" aria-hidden="true">${SHAPES[s]}</span>`)).join('')) : ''}
+      ${sizeList.length ? group('Size', sizeList.map(s => row('size', s, s, state.sizes.has(s), scope.filter(p => p.size === s).length)).join('')) : ''}
       ${group('Price', BANDS.map(b => row('band', b.id, b.label, state.bands.has(b.id), '')).join(''))}
       ${group('Availability', row('instock', '1', 'In stock only', state.instock, '') + row('sameday', '1', 'Same-day delivery', state.sameday, '') + row('offer', '1', 'On offer only', state.offer, ''))}
-      ${group('Occasion', occs.map(o => row('occ', o, o, state.occs.has(o), count(p => (p.occ || []).includes(o)))).join(''), state.occs.size > 0)}
+      ${group('Occasion', occs.map(o => row('occ', o, o, state.occs.has(o), scope.filter(p => (p.occ || []).includes(o)).length)).join(''), state.occs.size > 0)}
     </div>`;
   };
 
@@ -190,6 +190,7 @@
     if (kind === 'sub') { state.sub = state.sub === val ? '' : val; state.item = ''; }
     else if (kind === 'item') state.item = state.item === val ? '' : val;
     else state[kind] = val;
+    panel.innerHTML = filtersHtml();
     render();
     const again = hero.querySelector(`[data-browse-set="${b.dataset.browseSet}"]`);
     again && again.focus();
@@ -214,6 +215,7 @@
     if (!a) return;
     e.preventDefault();
     if (a.dataset.crumb === 'cat') { state.sub = ''; state.item = ''; } else state.item = '';
+    panel.innerHTML = filtersHtml();
     render();
   });
   const sorters = {
