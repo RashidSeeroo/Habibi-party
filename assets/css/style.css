@@ -1587,3 +1587,39 @@ html.lb-open { overflow: hidden; }
 @media (min-width: 992px) {
   .filters-desktop { position: sticky; top: 176px; max-height: calc(100vh - 192px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding-right: 4px; }
 }
+
+/* ---------- Habibi Box: compact layout ---------- */
+.box-section { padding-block: clamp(28px, 4vw, 48px); }
+.box-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); align-items: center; }
+.box-title { gap: 14px; margin-bottom: 10px; align-items: center; }
+.box-title img { width: clamp(64px, 8vw, 92px); margin-bottom: 0; }
+.box-title h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); line-height: 1.05; }
+.box-section .lead-text { font-size: .98rem; margin-bottom: 18px !important; max-width: 52ch; }
+.builder fieldset { margin: 0 0 12px; padding: 0; border: 0; display: flow-root; }
+.builder legend { float: left; width: 118px; margin: 0; padding-top: 9px; font-size: 1rem; letter-spacing: 0; }
+.builder .opts { margin-left: 128px; gap: 6px; }
+.opt span { min-height: 38px; padding: 0 14px; font-size: .9rem; border-width: 1.5px; }
+.box-result { padding: 20px 22px; border-radius: 22px; top: 176px; }
+.box-result h3 { font-size: 1.25rem; margin: 0; }
+.box-result .sum { margin-bottom: 12px; font-size: .88rem; }
+.box-items { grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 14px; }
+.box-items li { padding: 8px 12px; font-size: .86rem; line-height: 1.25; border-radius: 10px; }
+.box-total { padding-top: 12px; margin-bottom: 12px; align-items: center; }
+.box-total .amt { font-size: 2rem; }
+.fit { font-size: .8rem; padding: 3px 10px; }
+.box-result .btn-hp { min-height: 46px; }
+@media (max-width: 575.98px) {
+  .builder legend { float: none; width: auto; padding-top: 0; margin-bottom: 6px; }
+  .builder .opts { margin-left: 0; }
+  .box-items { grid-template-columns: 1fr; }
+}
+.box-grid { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 36px); }
+.builder legend { width: 74px; }
+.builder .opts { margin-left: 82px; gap: 6px; }
+.opt span { padding: 0 12px; font-size: .86rem; min-height: 36px; }
+.builder fieldset { margin-bottom: 10px; }
+.box-items { grid-template-columns: 1fr; }
+@media (min-width: 1200px) { .box-items { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 575.98px) { .builder legend { width: auto; } .builder .opts { margin-left: 0; } }
+.builder legend { padding-top: 0; line-height: 36px; }
+@media (max-width: 575.98px) { .builder legend { line-height: 1.3; } }
