@@ -1569,13 +1569,3 @@ html.lb-open { overflow: hidden; }
 .page-hero .browse-label { margin: 0; }
 .page-hero .hero-mat .browse-row { align-items: flex-end; }
 @media (max-width: 767.98px) { .page-hero .hero-mat .browse-row { align-items: flex-start; } }
-
-/* Banner rows: heading inline with its chips, chips scroll sideways on one line */
-.page-hero .browse-row { flex-direction: row; align-items: center; gap: 12px; }
-.page-hero .browse-label { flex: none; margin: 0; white-space: nowrap; }
-.page-hero .browse-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding: 2px 0; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
-.page-hero .browse-chips::-webkit-scrollbar { display: none; }
-.page-hero .browse-chips button { flex: none; white-space: nowrap; }
-.page-hero .hero-mat .browse-row { align-items: center; }
-.page-hero .hero-mat .browse-chips { -webkit-mask-image: none; mask-image: none; overflow: visible; flex-wrap: wrap; justify-content: flex-end; }
-@media (max-width: 767.98px) { .page-hero .hero-mat .browse-row { align-items: flex-start; flex-direction: column; } .page-hero .hero-mat .browse-chips { justify-content: flex-start; } }
