@@ -1,4 +1,4 @@
-﻿:root{--grape:#2B0B3F;--pink:#F52B91;--pink-d:#D81B60;--sun:#F5B93B;--teal:#17A58B;--sky:#3BA9E0;--bg:#F6F1FA;--card:#fff;--ink:#241233;--soft:#6F6380;--line:#ECE5F2;--display:"Bricolage Grotesque",system-ui,sans-serif;--body:"Plus Jakarta Sans",system-ui,sans-serif}
+:root{--grape:#2B0B3F;--pink:#F52B91;--pink-d:#D81B60;--sun:#F5B93B;--teal:#17A58B;--sky:#3BA9E0;--bg:#F6F1FA;--card:#fff;--ink:#241233;--soft:#6F6380;--line:#ECE5F2;--display:"Fredoka",system-ui,sans-serif;--body:"Nunito Sans",system-ui,sans-serif}
 *{box-sizing:border-box}
 body.adm{margin:0;background:var(--bg);color:var(--ink);font:400 .94rem/1.5 var(--body);-webkit-font-smoothing:antialiased}
 .adm h1,.adm h2,.adm h3{font-family:var(--display);margin:0;color:var(--grape)}
