@@ -1569,3 +1569,12 @@ html.lb-open { overflow: hidden; }
 .page-hero .browse-label { margin: 0; }
 .page-hero .hero-mat .browse-row { align-items: flex-end; }
 @media (max-width: 767.98px) { .page-hero .hero-mat .browse-row { align-items: flex-start; } }
+
+/* Mega menus built from the site category tree */
+.mega .mega-grid { grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr)); gap: 22px 24px; max-height: calc(100vh - 240px); overflow-y: auto; overscroll-behavior: contain; }
+.mega-grid h4 { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.mega-grid h4::before { display: block; }
+.mega-grid h4 a { flex: 1; min-width: 0; }
+.mega-grid .mm-col > ul:empty { display: none; }
+@media (max-width: 1399.98px) { .mega .mega-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 1099.98px) { .mega .mega-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

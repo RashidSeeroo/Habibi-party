@@ -31,11 +31,16 @@
     if (p.stock === undefined) { const h = hash(p.id); p.stock = h % 9 !== 0; p.sameday = h % 3 !== 0; }
   });
 
-  /* Balloon sub-categories come from the Balloons menu itself */
-  const TREE = [...document.querySelectorAll('#mega-1 .mega-balloons > div')].map(col => ({
-    name: col.querySelector('h4 a').textContent.trim(),
-    items: [...col.querySelectorAll('li a')].map(a => a.textContent.trim()).filter(x => x !== col.querySelector('h4 a').textContent.trim())
-  }));
+  /* Categories, sub-categories and items come from the main menu itself */
+  const MENU = {};
+  $$('.mega[data-cat]').forEach(m => {
+    MENU[m.dataset.cat] = [...m.querySelectorAll('.mm-col')].map(col => {
+      const name = col.querySelector('h4 a').textContent.trim();
+      return { name, items: [...col.querySelectorAll('li a')].map(a => a.textContent.trim()).filter(x => x !== name) };
+    });
+  });
+  const treeOf = c => MENU[c] || [];
+  const curTree = () => (state.cats.size === 1 ? treeOf([...state.cats][0]) : []);
 
   const state = {
     cats: new Set(params.getAll('cat')),
@@ -55,9 +60,12 @@
     sizes: new Set(params.getAll('size').filter(s => SIZES.includes(s))),
     bands: new Set()
   };
-  if (state.sub && !TREE.some(t => t.name === state.sub)) state.sub = '';
-  if (state.item && !(TREE.find(t => t.name === state.sub) || { items: [] }).items.includes(state.item)) state.item = '';
-  if (state.sub || state.material) state.cats.add('Balloons');
+  if (state.material) state.cats.add('Balloons');
+  {
+    const tree = curTree();
+    if (state.sub && !tree.some(x => x.name === state.sub)) state.sub = '';
+    if (state.item && !(tree.find(x => x.name === state.sub) || { items: [] }).items.includes(state.item)) state.item = '';
+  }
   if (state.q) $('#q-top').value = params.get('q');
 
   const unique = arr => [...new Set(arr)];
@@ -65,6 +73,15 @@
   const occs = unique([...items.flatMap(p => p.occ || []), ...state.occs]);
   const count = (fn) => items.filter(fn).length;
   const isBalloons = () => state.cats.has('Balloons');
+  const PRODUCT_CATS = new Set(items.map(p => p.cat));
+  const stem = c => c.toLowerCase().replace(/s$/, '');
+  const hay = p => `${p.name} ${p.cat} ${(p.occ || []).join(' ')}`.toLowerCase();
+  const realCat = () => state.cats.size === 1 && PRODUCT_CATS.has([...state.cats][0]);
+  const catHit = p => !state.cats.size || [...state.cats].some(c => (PRODUCT_CATS.has(c) ? p.cat === c : hay(p).includes(stem(c))));
+  const subHit = p => !state.sub || !realCat() || p.sub === state.sub;
+  const itemHit = p => !state.item || ((p.items || []).includes(state.item) || p.name.toLowerCase().includes(state.item.toLowerCase()));
+  const matHit = p => !state.material || p.material === state.material;
+  const inScope = p => catHit(p) && subHit(p) && itemHit(p) && matHit(p);
   const resetBalloon = () => { state.sub = ''; state.item = ''; state.material = ''; };
 
   
@@ -73,7 +90,7 @@
       <label class="check"><input type="checkbox" name="${name}" value="${value}" ${on ? 'checked' : ''}>${lead}<span class="cf-name">${label}</span>${ct === '' ? '' : `<span class="ct">${ct}</span>`}</label>`;
 
   const filtersHtml = () => {
-    const scope = items.filter(p => (!state.cats.size || state.cats.has(p.cat)) && (!state.sub || p.sub === state.sub) && (!state.item || (p.items || []).includes(state.item)) && (!state.material || p.material === state.material));
+    const scope = items.filter(inScope);
     const shapeList = Object.keys(SHAPES).filter(s => scope.some(p => p.shape === s));
     const sizeList = SIZES.filter(s => scope.some(p => p.size === s));
     const colours = Object.keys(COLOURS).map(c => {
@@ -151,7 +168,7 @@
   const heroCats = $('[data-hero-cats]');
   const heroChips = $('[data-hero-cat-chips]');
   heroCats.hidden = false;
-  heroChips.innerHTML = ['', ...cats].map(c => `<button type="button" data-hero-cat="${c}" aria-pressed="false">${c || 'All'}</button>`).join('');
+  heroChips.innerHTML = ['', ...Object.keys(MENU)].map(c => `<button type="button" data-hero-cat="${c}" aria-pressed="false">${c || 'All'}</button>`).join('');
   heroChips.addEventListener('click', e => {
     const b = e.target.closest('[data-hero-cat]');
     if (!b) return;
@@ -167,17 +184,22 @@
   const brow = (label, buttons) => `<div class="browse-row"><span class="browse-label">${label}</span><div class="browse-chips">${buttons}</div></div>`;
   const bBtn = (kind, val, text, on, lead = '') => `<button type="button" data-browse-set="${kind}|${val}" aria-pressed="${on}">${lead}${text}</button>`;
   const renderBrowse = () => {
-    const show = isBalloons() && state.cats.size === 1;
+    const tree = curTree();
+    const show = tree.length > 0;
+    const bal = show && isBalloons();
     hero.classList.toggle('is-cat', show);
-    browse.hidden = heroMat.hidden = !show;
+    browse.hidden = !show;
+    heroMat.hidden = !bal;
     heroCats.hidden = show;
     if (!show) { browse.innerHTML = heroMat.innerHTML = ''; return; }
-    const sub = TREE.find(t => t.name === state.sub);
+    const sub = tree.find(x => x.name === state.sub);
+    const cat = [...state.cats][0];
     const html = sub
-      ? brow(`In ${sub.name}`, sub.items.map(i => bBtn('item', i, i, i === state.item)).join(''))
-      : brow('In Balloons', TREE.map(t => bBtn('sub', t.name, t.name, false)).join(''));
+      ? (sub.items.length ? brow(`In ${sub.name}`, sub.items.map(i => bBtn('item', i, i, i === state.item)).join('')) : '')
+      : brow(`In ${cat}`, tree.map(x => bBtn('sub', x.name, x.name, false)).join(''));
     browse.innerHTML = html;
-    heroMat.innerHTML = brow('Material', bBtn('material', '', 'All materials', !state.material) + MATERIALS.map(m => bBtn('material', m, m, m === state.material, `<span class="mat-dot mat-dot--${m.toLowerCase()}"></span>`)).join(''));
+    browse.hidden = !html;
+    heroMat.innerHTML = bal ? brow('Material', bBtn('material', '', 'All materials', !state.material) + MATERIALS.map(m => bBtn('material', m, m, m === state.material, `<span class="mat-dot mat-dot--${m.toLowerCase()}"></span>`)).join('')) : '';
   };
   const onBrowse = e => {
     const b = e.target.closest('[data-browse-set]');
@@ -225,15 +247,13 @@
   const inBand = p => !state.bands.size || [...state.bands].some(id => { const b = BANDS.find(x => x.id === id); return p.price >= b.min && p.price < b.max; });
 
   const matches = p =>
-    (!state.cats.size || state.cats.has(p.cat)) &&
+    catHit(p) &&
     (!state.occs.size || (p.occ || []).some(o => state.occs.has(o))) &&
     (!state.offer || p.was) &&
     (!state.instock || p.stock) &&
     (!state.sameday || p.sameday) &&
     p.price <= state.max &&
-    (!state.sub || p.sub === state.sub) &&
-    (!state.item || (p.items || []).includes(state.item)) &&
-    (!state.material || p.material === state.material) &&
+    subHit(p) && itemHit(p) && matHit(p) &&
     (!state.colours.size || p.colour.some(c => state.colours.has(c))) &&
     (!state.shapes.size || state.shapes.has(p.shape)) &&
     (!state.sizes.size || state.sizes.has(p.size)) &&
@@ -249,6 +269,7 @@
     else if (state.item) title.textContent = state.item;
     else if (state.sub) title.textContent = state.sub;
     else if (state.cats.size === 1) title.textContent = [...state.cats][0];
+    else if (state.colours.size === 1 && !state.cats.size) title.textContent = `${[...state.colours][0]} party supplies`;
     else if (state.occs.size === 1) title.textContent = [...state.occs][0];
     else if (state.offer) title.textContent = 'Offers';
     else title.textContent = 'All products';
