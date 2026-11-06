@@ -1582,6 +1582,3 @@ html.lb-open { overflow: hidden; }
 /* Nested sub-category / item filters under the selected category */
 .cf-nest { margin: 2px 0 6px 12px; padding-left: 14px; border-left: 2px solid rgba(43,11,63,.12); }
 .cf-nest .check { font-size: .9rem; }
-
-/* Filters scroll with the page (not sticky) */
-.filters, .filters-desktop { position: static; top: auto; max-height: none; overflow: visible; }
