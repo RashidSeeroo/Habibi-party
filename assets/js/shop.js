@@ -178,8 +178,9 @@
     heroCats.hidden = show;
     if (!show) { browse.innerHTML = heroMat.innerHTML = ''; return; }
     const sub = TREE.find(t => t.name === state.sub);
-    let html = brow('In Balloons', TREE.map(t => bBtn('sub', t.name, t.name, t.name === state.sub)).join(''));
-    if (sub) html += brow(`In ${sub.name}`, sub.items.map(i => bBtn('item', i, i, i === state.item)).join(''));
+    const html = sub
+      ? brow(`In ${sub.name}`, sub.items.map(i => bBtn('item', i, i, i === state.item)).join(''))
+      : brow('In Balloons', TREE.map(t => bBtn('sub', t.name, t.name, false)).join(''));
     browse.innerHTML = html;
     heroMat.innerHTML = brow('Material', bBtn('material', '', 'All materials', !state.material) + MATERIALS.map(m => bBtn('material', m, m, m === state.material, `<span class="mat-dot mat-dot--${m.toLowerCase()}"></span>`)).join(''));
   };
