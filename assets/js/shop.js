@@ -203,7 +203,7 @@
     const sub = tree.find(x => x.name === state.sub);
     const cat = [...state.cats][0];
     const html = sub
-      ? (sub.items.length ? brow(`In ${sub.name}`, sub.items.map(i => bBtn('item', i, i, i === state.item)).join('')) : '')
+      ? ''
       : brow(`In ${cat}`, tree.map(x => bBtn('sub', x.name, x.name, false)).join(''));
     browse.innerHTML = html;
     browse.hidden = !html;
