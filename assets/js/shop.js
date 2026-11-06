@@ -118,11 +118,6 @@
   search.addEventListener('input', () => { state.s = search.value.trim().toLowerCase(); render(); });
 
   const grid = $('[data-grid]');
-  $$('[data-view]').forEach(b => b.addEventListener('click', () => {
-    grid.classList.toggle('is-list', b.dataset.view === 'list');
-    $$('[data-view]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-  }));
-
   const rebuild = () => { panel.innerHTML = filtersHtml(); render(); };
   const clearAll = () => {
     state.cats.clear(); state.occs.clear(); state.q = ''; state.s = ''; state.offer = false; state.instock = false; state.sameday = false; state.max = 300;
