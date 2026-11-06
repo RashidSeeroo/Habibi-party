@@ -100,16 +100,25 @@
       const sw = `<span class="cf-sw${COLOURS[c] === 'multi' ? ' is-multi' : ''}" style="${COLOURS[c] === 'multi' ? '' : `background:${COLOURS[c]}`}"></span>`;
       return `<div class="${n || state.colours.has(c) ? '' : 'is-empty'}">${row('colour', c, c, state.colours.has(c), n, sw)}</div>`;
     }).join('');
-    const curSub = curTree().find(x => x.name === state.sub);
-    const inSub = items.filter(p => catHit(p) && subHit(p));
-    const subGroup = curSub && curSub.items.length
-      ? group(curSub.name, curSub.items.map(i => row('item', i, i, state.item === i, inSub.filter(p => hasItem(p, i)).length)).join(''))
-      : '';
-    const catGroup = group('Category', Object.keys(MENU).map(c => row('cat', c, c, state.cats.has(c), items.filter(p => catMatch(p, c)).length)).join(''));
+    const catRows = Object.keys(MENU).map(c => {
+      let h = row('cat', c, c, state.cats.has(c), items.filter(p => catMatch(p, c)).length);
+      if (state.cats.size === 1 && state.cats.has(c)) {
+        h += `<div class="cf-nest">${MENU[c].map(sg => {
+          const on = state.sub === sg.name;
+          let s = row('sub', sg.name, sg.name, on, realCat() ? items.filter(p => p.cat === c && p.sub === sg.name).length : '');
+          if (on && sg.items.length) {
+            const inSub = items.filter(p => catHit(p) && subHit(p));
+            s += `<div class="cf-nest">${sg.items.map(i => row('item', i, i, state.item === i, inSub.filter(p => hasItem(p, i)).length)).join('')}</div>`;
+          }
+          return s;
+        }).join('')}</div>`;
+      }
+      return h;
+    }).join('');
+    const catGroup = group('Category', catRows);
     return `
     <div class="cf">
       ${catGroup}
-      ${subGroup}
       ${group('Colour', colours)}
       ${shapeList.length ? group('Shape', shapeList.map(s => row('shape', s, s, state.shapes.has(s), scope.filter(p => p.shape === s).length, `<span class="cf-glyph" aria-hidden="true">${SHAPES[s]}</span>`)).join('')) : ''}
       ${sizeList.length ? group('Size', sizeList.map(s => row('size', s, s, state.sizes.has(s), scope.filter(p => p.size === s).length)).join('')) : ''}
@@ -138,6 +147,7 @@
     }
     if (t.name === 'offer' || t.name === 'instock' || t.name === 'sameday') state[t.name] = t.checked;
     if (t.name === 'cat') { state.cats.clear(); resetBalloon(); if (t.checked) state.cats.add(t.value); panel.innerHTML = filtersHtml(); }
+    if (t.name === 'sub') { state.sub = t.checked ? t.value : ''; state.item = ''; panel.innerHTML = filtersHtml(); }
     if (t.name === 'item') { state.item = t.checked ? t.value : ''; panel.innerHTML = filtersHtml(); }
     render();
   });
@@ -192,9 +202,7 @@
     if (!show) { browse.innerHTML = heroMat.innerHTML = ''; return; }
     const sub = tree.find(x => x.name === state.sub);
     const cat = [...state.cats][0];
-    const html = sub
-      ? ''
-      : brow(`In ${cat}`, tree.map(x => bBtn('sub', x.name, x.name, false)).join(''));
+    const html = '';
     browse.innerHTML = html;
     browse.hidden = !html;
     heroMat.innerHTML = bal ? brow('Material', bBtn('material', '', 'All materials', !state.material) + MATERIALS.map(m => bBtn('material', m, m, m === state.material, `<span class="mat-dot mat-dot--${m.toLowerCase()}"></span>`)).join('')) : '';

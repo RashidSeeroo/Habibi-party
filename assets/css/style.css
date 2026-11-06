@@ -1578,3 +1578,7 @@ html.lb-open { overflow: hidden; }
 .mega-grid .mm-col > ul:empty { display: none; }
 @media (max-width: 1399.98px) { .mega .mega-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 1099.98px) { .mega .mega-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Nested sub-category / item filters under the selected category */
+.cf-nest { margin: 2px 0 6px 12px; padding-left: 14px; border-left: 2px solid rgba(43,11,63,.12); }
+.cf-nest .check { font-size: .9rem; }
