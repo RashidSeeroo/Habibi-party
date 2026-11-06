@@ -4,7 +4,6 @@
   const items = [...HP.products, ...HP.packs];
   const params = new URLSearchParams(location.search);
 
-  /* Balloon filters (same groups as the main Balloons category) */
   const MATERIALS = ['Standard', 'Metallic', 'Macaron', 'Chrome'];
   const COLOURS = {
     'Black': '#1E1A22', 'Baby Blue': '#9CCBEF', 'Baby Pink': '#F5BCD0', 'Beige': '#E6D3B3', 'Blue': '#2F6FD0', 'Creme': '#F3E9D2',
@@ -20,6 +19,18 @@
     { id: '50+', label: 'AED 50 and up', min: 50, max: 1e9 }
   ];
 
+  /* Colour and availability for every product (demo data derived from tone, name and id) */
+  const TONE_COLOUR = { pink: 'Pink', sky: 'Baby Blue', lilac: 'Lavender', sun: 'Gold', mint: 'Green', red: 'Red', blush: 'Baby Pink' };
+  const hash = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+  items.forEach(p => {
+    if (!p.colour) {
+      const n = p.name.toLowerCase();
+      p.colour = /rose gold/.test(n) ? ['Rose Gold'] : /rainbow|confetti|unicorn/.test(n) ? ['Multicolour']
+        : /gold/.test(n) ? ['Gold'] : /pink/.test(n) ? ['Pink'] : p.tone ? [TONE_COLOUR[p.tone] || 'Multicolour'] : ['Multicolour'];
+    }
+    if (p.stock === undefined) { const h = hash(p.id); p.stock = h % 9 !== 0; p.sameday = h % 3 !== 0; }
+  });
+
   /* Balloon sub-categories come from the Balloons menu itself */
   const TREE = [...document.querySelectorAll('#mega-1 .mega-balloons > div')].map(col => ({
     name: col.querySelector('h4 a').textContent.trim(),
@@ -30,7 +41,10 @@
     cats: new Set(params.getAll('cat')),
     occs: new Set(params.getAll('occ')),
     q: (params.get('q') || '').trim().toLowerCase(),
+    s: '',
     offer: params.get('offer') === '1',
+    instock: false,
+    sameday: false,
     max: 300,
     sort: 'featured',
     sub: params.get('sub') || '',
@@ -43,44 +57,40 @@
   };
   if (state.sub && !TREE.some(t => t.name === state.sub)) state.sub = '';
   if (state.item && !(TREE.find(t => t.name === state.sub) || { items: [] }).items.includes(state.item)) state.item = '';
-  if (state.sub || state.colours.size || state.shapes.size || state.sizes.size) state.cats.add('Balloons');
+  if (state.sub || state.material) state.cats.add('Balloons');
   if (state.q) $('#q-top').value = params.get('q');
 
   const unique = arr => [...new Set(arr)];
   const cats = unique([...items.map(p => p.cat), ...state.cats]);
-  const occs = unique([...items.flatMap(p => p.occ), ...state.occs]);
+  const occs = unique([...items.flatMap(p => p.occ || []), ...state.occs]);
   const count = (fn) => items.filter(fn).length;
   const isBalloons = () => state.cats.has('Balloons');
-  const resetBalloon = () => { state.sub = ''; state.item = ''; state.material = ''; state.colours.clear(); state.shapes.clear(); state.sizes.clear(); state.bands.clear(); };
+  const resetBalloon = () => { state.sub = ''; state.item = ''; state.material = ''; };
 
-  const balloons = items.filter(p => p.cat === 'Balloons');
-  const colourList = Object.keys(COLOURS).filter(c => balloons.some(p => (p.colour || []).includes(c)));
-  const shapeList = Object.keys(SHAPES).filter(s => balloons.some(p => p.shape === s));
-  const sizeList = SIZES.filter(s => balloons.some(p => p.size === s));
+  const shapeList = Object.keys(SHAPES).filter(s => items.some(p => p.shape === s));
+  const sizeList = SIZES.filter(s => items.some(p => p.size === s));
 
-  const check = (name, value, label, on, ct) => `
-      <label class="check"><input type="checkbox" name="${name}" value="${value}" ${on ? 'checked' : ''}>${label}<span class="ct">${ct}</span></label>`;
+  const group = (title, body, open = true) => `<details class="cf-group"${open ? ' open' : ''}><summary>${title}</summary><div class="cf-body">${body}</div></details>`;
+  const row = (name, value, label, on, ct, lead = '') => `
+      <label class="check"><input type="checkbox" name="${name}" value="${value}" ${on ? 'checked' : ''}>${lead}<span class="cf-name">${label}</span>${ct === '' ? '' : `<span class="ct">${ct}</span>`}</label>`;
 
-  const balloonFilters = () => `
-    ${colourList.length ? `<div class="fgroup"><h3>Colour</h3><div class="swatches">${colourList.map(c => `
-      <label class="sw" title="${c}"><input type="checkbox" name="colour" value="${c}" ${state.colours.has(c) ? 'checked' : ''} aria-label="${c}"><span class="sw-dot${COLOURS[c] === 'multi' ? ' is-multi' : ''}" style="${COLOURS[c] === 'multi' ? '' : `background:${COLOURS[c]}`}"></span></label>`).join('')}</div></div>` : ''}
-    ${shapeList.length ? `<div class="fgroup"><h3>Shape</h3>${shapeList.map(s => check('shape', s, `<span class="glyph" aria-hidden="true">${SHAPES[s]}</span>${s}`, state.shapes.has(s), count(p => p.shape === s))).join('')}</div>` : ''}
-    ${sizeList.length ? `<div class="fgroup"><h3>Size</h3>${sizeList.map(s => check('size', s, s, state.sizes.has(s), count(p => p.size === s))).join('')}</div>` : ''}
-    <div class="fgroup"><h3>Price</h3>${BANDS.map(b => check('band', b.id, b.label, state.bands.has(b.id), count(p => p.price >= b.min && p.price < b.max && (!isBalloons() || p.cat === 'Balloons')))).join('')}</div>`;
-
-  const filtersHtml = () => `
-    <h2>Filter</h2>
-    <div class="fgroup"><h3>Category</h3>${cats.map(c => `
-      <label class="check"><input type="checkbox" name="cat" value="${c}" ${state.cats.has(c) ? 'checked' : ''}>${c}<span class="ct">${count(p => p.cat === c)}</span></label>`).join('')}
-    </div>
-    ${isBalloons() ? balloonFilters() : ''}
-    <div class="fgroup"><h3>Occasion</h3>${occs.map(o => `
-      <label class="check"><input type="checkbox" name="occ" value="${o}" ${state.occs.has(o) ? 'checked' : ''}>${o}<span class="ct">${count(p => p.occ.includes(o))}</span></label>`).join('')}
-    </div>
-    ${isBalloons() ? '' : `<div class="fgroup price-range"><h3>Price up to <output data-max-out>${aed(state.max)}</output></h3>
-      <input type="range" name="max" min="20" max="300" step="10" value="${state.max}" aria-label="Maximum price in AED">
-    </div>`}
-    <div class="fgroup"><label class="check"><input type="checkbox" name="offer" ${state.offer ? 'checked' : ''}>On offer only</label></div>`;
+  const filtersHtml = () => {
+    const scope = items.filter(p => !state.cats.size || state.cats.has(p.cat));
+    const colours = Object.keys(COLOURS).map(c => {
+      const n = scope.filter(p => p.colour.includes(c)).length;
+      const sw = `<span class="cf-sw${COLOURS[c] === 'multi' ? ' is-multi' : ''}" style="${COLOURS[c] === 'multi' ? '' : `background:${COLOURS[c]}`}"></span>`;
+      return `<div class="${n || state.colours.has(c) ? '' : 'is-empty'}">${row('colour', c, c, state.colours.has(c), n, sw)}</div>`;
+    }).join('');
+    return `
+    <div class="cf">
+      ${group('Colour', colours)}
+      ${shapeList.length ? group('Shape', shapeList.map(s => row('shape', s, s, state.shapes.has(s), count(p => p.shape === s), `<span class="cf-glyph" aria-hidden="true">${SHAPES[s]}</span>`)).join('')) : ''}
+      ${sizeList.length ? group('Size', sizeList.map(s => row('size', s, s, state.sizes.has(s), count(p => p.size === s))).join('')) : ''}
+      ${group('Price', BANDS.map(b => row('band', b.id, b.label, state.bands.has(b.id), '')).join(''))}
+      ${group('Availability', row('instock', '1', 'In stock only', state.instock, '') + row('sameday', '1', 'Same-day delivery', state.sameday, '') + row('offer', '1', 'On offer only', state.offer, ''))}
+      ${group('Occasion', occs.map(o => row('occ', o, o, state.occs.has(o), count(p => (p.occ || []).includes(o)))).join(''), state.occs.size > 0)}
+    </div>`;
+  };
 
   const panel = document.createElement('form');
   panel.innerHTML = filtersHtml();
@@ -99,25 +109,25 @@
       const set = state[SETS[t.name]];
       t.checked ? set.add(t.value) : set.delete(t.value);
     }
-    if (t.name === 'offer') state.offer = t.checked;
-    if (t.name === 'max') { state.max = +t.value; $('[data-max-out]', panel).textContent = aed(state.max); }
-    if (t.name === 'cat') {
-      const was = panel.contains(panel.querySelector('[name="colour"], [name="band"]'));
-      if (!isBalloons()) resetBalloon();
-      if (was !== isBalloons()) {
-        panel.innerHTML = filtersHtml();
-        const again = panel.querySelector(`[name="cat"][value="${t.value}"]`);
-        again && again.focus();
-      }
-    }
+    if (t.name === 'offer' || t.name === 'instock' || t.name === 'sameday') state[t.name] = t.checked;
     render();
   });
   $('[data-sort]').addEventListener('change', e => { state.sort = e.target.value; render(); });
 
+  const search = $('[data-search]');
+  search.addEventListener('input', () => { state.s = search.value.trim().toLowerCase(); render(); });
+
+  const grid = $('[data-grid]');
+  $$('[data-view]').forEach(b => b.addEventListener('click', () => {
+    grid.classList.toggle('is-list', b.dataset.view === 'list');
+    $$('[data-view]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  }));
+
   const rebuild = () => { panel.innerHTML = filtersHtml(); render(); };
   const clearAll = () => {
-    state.cats.clear(); state.occs.clear(); state.q = ''; state.offer = false; state.max = 300; resetBalloon();
-    $('#q-top').value = '';
+    state.cats.clear(); state.occs.clear(); state.q = ''; state.s = ''; state.offer = false; state.instock = false; state.sameday = false; state.max = 300;
+    state.colours.clear(); state.shapes.clear(); state.sizes.clear(); state.bands.clear(); resetBalloon();
+    $('#q-top').value = ''; search.value = '';
     rebuild();
   };
   $('[data-clear]').addEventListener('click', clearAll);
@@ -132,33 +142,48 @@
     if (kind === 'occ') state.occs.delete(val);
     if (kind === 'q') { state.q = ''; $('#q-top').value = ''; }
     if (kind === 'offer') state.offer = false;
+    if (kind === 'instock') state.instock = false;
+    if (kind === 'sameday') state.sameday = false;
     if (kind === 'max') state.max = 300;
     if (kind === 'sub') { state.sub = ''; state.item = ''; state.material = ''; }
     if (kind === 'item') state.item = '';
     if (kind === 'material') state.material = '';
-    if (SETS[kind]) state[SETS[kind]].delete(val);
+    if (SETS[kind] && kind !== 'cat') state[SETS[kind]].delete(val);
     rebuild();
   });
 
-  /* Browse row: balloon sub-categories, items and latex materials */
+  /* Categories row in the banner */
+  const heroCats = $('[data-hero-cats]');
+  const heroChips = $('[data-hero-cat-chips]');
+  heroCats.hidden = false;
+  heroChips.innerHTML = ['', ...cats].map(c => `<button type="button" data-hero-cat="${c}" aria-pressed="false">${c || 'All'}</button>`).join('');
+  heroChips.addEventListener('click', e => {
+    const b = e.target.closest('[data-hero-cat]');
+    if (!b) return;
+    state.cats.clear(); resetBalloon();
+    if (b.dataset.heroCat) state.cats.add(b.dataset.heroCat);
+    rebuild();
+  });
+
+  /* Browse rows: balloon sub-categories, items and materials */
   const browse = $('[data-browse]');
-  const row = (label, buttons) => `<div class="browse-row"><span class="browse-label">${label}</span><div class="browse-chips">${buttons}</div></div>`;
+  const brow = (label, buttons) => `<div class="browse-row"><span class="browse-label">${label}</span><div class="browse-chips">${buttons}</div></div>`;
   const bBtn = (kind, val, text, on) => `<button type="button" data-browse-set="${kind}|${val}" aria-pressed="${on}">${text}</button>`;
   const renderBrowse = () => {
     const show = isBalloons() && state.cats.size === 1;
     browse.hidden = !show;
     if (!show) { browse.innerHTML = ''; return; }
     const sub = TREE.find(t => t.name === state.sub);
-    let html = row('Browse', bBtn('sub', '', 'All balloons', !state.sub) + TREE.map(t => bBtn('sub', t.name, t.name, t.name === state.sub)).join(''));
-    if (sub) html += row(sub.name, bBtn('item', '', 'All', !state.item) + sub.items.map(i => bBtn('item', i, i, i === state.item)).join(''));
-    if (state.sub === 'Latex Balloons') html += row('Material', bBtn('material', '', 'Any', !state.material) + MATERIALS.map(m => bBtn('material', m, m, m === state.material)).join(''));
+    let html = brow('In Balloons', bBtn('sub', '', 'All balloons', !state.sub) + TREE.map(t => bBtn('sub', t.name, t.name, t.name === state.sub)).join(''));
+    if (sub) html += brow(`In ${sub.name}`, bBtn('item', '', 'All', !state.item) + sub.items.map(i => bBtn('item', i, i, i === state.item)).join(''));
+    html += brow('Material', bBtn('material', '', 'All materials', !state.material) + MATERIALS.map(m => bBtn('material', m, m, m === state.material)).join(''));
     browse.innerHTML = html;
   };
   browse.addEventListener('click', e => {
     const b = e.target.closest('[data-browse-set]');
     if (!b) return;
     const [kind, val] = b.dataset.browseSet.split('|');
-    if (kind === 'sub') { state.sub = val; state.item = ''; state.material = ''; }
+    if (kind === 'sub') { state.sub = val; state.item = ''; }
     else state[kind] = val;
     render();
     const again = browse.querySelector(`[data-browse-set="${b.dataset.browseSet}"]`);
@@ -177,19 +202,21 @@
 
   const matches = p =>
     (!state.cats.size || state.cats.has(p.cat)) &&
-    (!state.occs.size || p.occ.some(o => state.occs.has(o))) &&
+    (!state.occs.size || (p.occ || []).some(o => state.occs.has(o))) &&
     (!state.offer || p.was) &&
+    (!state.instock || p.stock) &&
+    (!state.sameday || p.sameday) &&
     p.price <= state.max &&
     (!state.sub || p.sub === state.sub) &&
     (!state.item || (p.items || []).includes(state.item)) &&
     (!state.material || p.material === state.material) &&
-    (!state.colours.size || (p.colour || []).some(c => state.colours.has(c))) &&
+    (!state.colours.size || p.colour.some(c => state.colours.has(c))) &&
     (!state.shapes.size || state.shapes.has(p.shape)) &&
     (!state.sizes.size || state.sizes.has(p.size)) &&
     inBand(p) &&
-    (!state.q || `${p.name} ${p.cat} ${p.occ.join(' ')}`.toLowerCase().includes(state.q));
+    (!state.s || p.name.toLowerCase().includes(state.s)) &&
+    (!state.q || `${p.name} ${p.cat} ${(p.occ || []).join(' ')}`.toLowerCase().includes(state.q));
 
-  const grid = $('[data-grid]');
   const empty = $('[data-empty]');
 
   const setHeading = () => {
@@ -206,9 +233,11 @@
   function render() {
     const list = items.filter(matches).sort(sorters[state.sort]);
     $('[data-result-count]').textContent = list.length;
+    $('[data-total]').textContent = items.length;
     grid.innerHTML = list.map(HP.card).join('');
     empty.hidden = list.length > 0;
     renderBrowse();
+    $$('[data-hero-cat]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.heroCat ? state.cats.size === 1 && state.cats.has(b.dataset.heroCat) : !state.cats.size)));
 
     const bandLabel = id => BANDS.find(b => b.id === id).label;
     chips.innerHTML = [
@@ -223,7 +252,8 @@
       ...[...state.occs].map(o => ['occ', o, o]),
       state.q ? ['q', state.q, `“${state.q}”`] : null,
       state.offer ? ['offer', '1', 'On offer'] : null,
-      state.max < 300 ? ['max', state.max, `Up to ${aed(state.max)}`] : null
+      state.instock ? ['instock', '1', 'In stock'] : null,
+      state.sameday ? ['sameday', '1', 'Same-day delivery'] : null
     ].filter(Boolean).map(([k, v, l]) => `<button type="button" data-chip="${k}|${v}" aria-label="Remove filter ${l}">${l}<i class="bi bi-x-lg" aria-hidden="true"></i></button>`).join('');
     if (chips.children.length) chips.insertAdjacentHTML('beforeend', '<button type="button" class="af-clear" data-chip="all|"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>Clear all</button>');
 

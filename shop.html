@@ -74,33 +74,37 @@
         <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span aria-current="page">Shop</span></nav>
         <h1 id="shop-title" data-shop-title>All products</h1>
         <p data-shop-lead>Balloons, decorations, tableware and favours, ready to deliver across the UAE.</p>
+        <div class="hero-cats" data-hero-cats hidden><span class="hero-cats-label">Categories</span><div class="hero-cats-chips" data-hero-cat-chips></div></div>
       </div>
       <img src="assets/img/mascot-box.svg" alt="" width="240" height="194" data-hero-mascot>
     </div>
   </section>
 
-  <section class="section shell pt-5">
-    <div class="shop-layout">
+  <div class="shell shop-toolbar">
+    <button class="btn-hp btn-hp--ghost btn-hp--sm filter-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOff" aria-controls="filterOff"><i class="bi bi-sliders" aria-hidden="true"></i> Filters</button>
+    <label class="shop-search"><i class="bi bi-search" aria-hidden="true"></i><input type="search" data-search placeholder="Search in this category" aria-label="Search in this category"></label>
+    <div class="sort"><span id="sort-lbl">Sort by</span>
+      <select class="form-select" data-sort aria-labelledby="sort-lbl">
+        <option value="featured">Featured</option>
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+        <option value="name">Name: A to Z</option>
+        <option value="new">Newest</option>
+      </select>
+    </div>
+    <div class="view-toggle" role="group" aria-label="View">
+      <button type="button" data-view="grid" aria-pressed="true" aria-label="Grid view"><i class="bi bi-grid" aria-hidden="true"></i></button>
+      <button type="button" data-view="list" aria-pressed="false" aria-label="List view"><i class="bi bi-list" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <section class="section shell pt-4"><div class="shop-layout">
       <aside class="filters filters-desktop" aria-label="Filters" data-filters-host></aside>
 
       <div>
         <div class="browse" data-browse hidden></div>
         <div class="active-filters" data-active-filters></div>
-        <div class="shop-bar">
-          <p class="count m-0" role="status" aria-live="polite"><b data-result-count>0</b> products</p>
-          <div class="d-flex gap-2 align-items-center flex-wrap">
-            <button class="btn-hp btn-hp--ghost btn-hp--sm filter-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOff" aria-controls="filterOff"><i class="bi bi-sliders" aria-hidden="true"></i> Filters</button>
-            <div class="sort"><span id="sort-lbl">Sort by</span>
-              <select class="form-select" data-sort aria-labelledby="sort-lbl">
-                <option value="featured">Featured</option>
-                <option value="price-asc">Price: low to high</option>
-                <option value="price-desc">Price: high to low</option>
-                <option value="name">Name: A to Z</option>
-                <option value="new">Newest</option>
-              </select>
-            </div>
-          </div>
-        </div>
+        <p class="shop-count m-0" role="status" aria-live="polite">Showing <b data-result-count>0</b> of <span data-total>0</span> products</p>
         <div class="products" data-grid></div>
         <div class="empty" data-empty hidden>
           <img src="assets/img/mascot-box.svg" alt="" width="180" height="145">

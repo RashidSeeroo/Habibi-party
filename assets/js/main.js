@@ -67,7 +67,8 @@
     const price = p.was
       ? `<span class="now-off">${aed(p.price)}</span><s>${aed(p.was)}</s>`
       : aed(p.price);
-    return `<article class="pcard">
+    const stock = p.stock === undefined ? '' : `<p class="stock ${p.stock ? (p.sameday ? 'is-same' : 'is-in') : 'is-out'}">${p.stock ? (p.sameday ? 'Same-day' : 'In stock') : 'Out of stock'}</p>`;
+    return `<article class="pcard${p.stock === false ? ' is-oos' : ''}">
       <div class="pcard-art" style="--tone:var(--${p.tone || 'blush'})">
         <span class="badges">${badges}</span>
         <button class="wish" type="button" data-wish="${p.id}" aria-pressed="${HP.wish.has(p.id)}" aria-label="${HP.wish.has(p.id) ? 'Remove' : 'Save'} ${p.name} ${HP.wish.has(p.id) ? 'from' : 'to'} wishlist"><i class="bi ${HP.wish.has(p.id) ? 'bi-heart-fill' : 'bi-heart'}" aria-hidden="true"></i></button>${art}
@@ -75,6 +76,7 @@
       </div>
       ${rating}
       <h3><a href="product.html?id=${p.id}">${p.name}</a></h3>
+      ${stock}
       <p class="price m-0">${price}</p>
     </article>`;
   };
