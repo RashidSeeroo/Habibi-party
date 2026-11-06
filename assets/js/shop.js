@@ -77,7 +77,8 @@
   const stem = c => c.toLowerCase().replace(/s$/, '');
   const hay = p => `${p.name} ${p.cat} ${(p.occ || []).join(' ')}`.toLowerCase();
   const realCat = () => state.cats.size === 1 && PRODUCT_CATS.has([...state.cats][0]);
-  const catHit = p => !state.cats.size || [...state.cats].some(c => (PRODUCT_CATS.has(c) ? p.cat === c : hay(p).includes(stem(c))));
+  const catMatch = (p, c) => (PRODUCT_CATS.has(c) ? p.cat === c : hay(p).includes(stem(c)));
+  const catHit = p => !state.cats.size || [...state.cats].some(c => catMatch(p, c));
   const subHit = p => !state.sub || !realCat() || p.sub === state.sub;
   const hasItem = (p, i) => (p.items || []).includes(i) || p.name.toLowerCase().includes(i.toLowerCase());
   const itemHit = p => !state.item || hasItem(p, state.item);
@@ -104,8 +105,10 @@
     const subGroup = curSub && curSub.items.length
       ? group(curSub.name, curSub.items.map(i => row('item', i, i, state.item === i, inSub.filter(p => hasItem(p, i)).length)).join(''))
       : '';
+    const catGroup = group('Category', Object.keys(MENU).map(c => row('cat', c, c, state.cats.has(c), items.filter(p => catMatch(p, c)).length)).join(''));
     return `
     <div class="cf">
+      ${catGroup}
       ${subGroup}
       ${group('Colour', colours)}
       ${shapeList.length ? group('Shape', shapeList.map(s => row('shape', s, s, state.shapes.has(s), scope.filter(p => p.shape === s).length, `<span class="cf-glyph" aria-hidden="true">${SHAPES[s]}</span>`)).join('')) : ''}
@@ -126,7 +129,7 @@
   mq.addEventListener('change', place);
   place();
 
-  const SETS = { colour: 'colours', shape: 'shapes', size: 'sizes', band: 'bands', cat: 'cats', occ: 'occs' };
+  const SETS = { colour: 'colours', shape: 'shapes', size: 'sizes', band: 'bands', occ: 'occs' };
   panel.addEventListener('input', e => {
     const t = e.target;
     if (SETS[t.name]) {
@@ -134,6 +137,7 @@
       t.checked ? set.add(t.value) : set.delete(t.value);
     }
     if (t.name === 'offer' || t.name === 'instock' || t.name === 'sameday') state[t.name] = t.checked;
+    if (t.name === 'cat') { state.cats.clear(); resetBalloon(); if (t.checked) state.cats.add(t.value); panel.innerHTML = filtersHtml(); }
     if (t.name === 'item') { state.item = t.checked ? t.value : ''; panel.innerHTML = filtersHtml(); }
     render();
   });
@@ -172,19 +176,6 @@
     rebuild();
   });
 
-  /* Categories row in the banner */
-  const heroCats = $('[data-hero-cats]');
-  const heroChips = $('[data-hero-cat-chips]');
-  heroCats.hidden = false;
-  heroChips.innerHTML = ['', ...Object.keys(MENU)].map(c => `<button type="button" data-hero-cat="${c}" aria-pressed="false">${c || 'All'}</button>`).join('');
-  heroChips.addEventListener('click', e => {
-    const b = e.target.closest('[data-hero-cat]');
-    if (!b) return;
-    state.cats.clear(); resetBalloon();
-    if (b.dataset.heroCat) state.cats.add(b.dataset.heroCat);
-    rebuild();
-  });
-
   /* Browse rows and material chips live in the banner, like the Balloons category page */
   const browse = $('[data-browse]');
   const heroMat = $('[data-hero-mat]');
@@ -198,7 +189,6 @@
     hero.classList.toggle('is-cat', show);
     browse.hidden = !show;
     heroMat.hidden = !bal;
-    heroCats.hidden = show;
     if (!show) { browse.innerHTML = heroMat.innerHTML = ''; return; }
     const sub = tree.find(x => x.name === state.sub);
     const cat = [...state.cats][0];
@@ -290,7 +280,6 @@
     grid.innerHTML = list.map(HP.card).join('');
     empty.hidden = list.length > 0;
     renderBrowse();
-    $$('[data-hero-cat]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.heroCat ? state.cats.size === 1 && state.cats.has(b.dataset.heroCat) : !state.cats.size)));
 
     const bandLabel = id => BANDS.find(b => b.id === id).label;
     chips.innerHTML = [
