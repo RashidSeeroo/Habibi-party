@@ -1582,3 +1582,8 @@ html.lb-open { overflow: hidden; }
 /* Nested sub-category / item filters under the selected category */
 .cf-nest { margin: 2px 0 6px 12px; padding-left: 14px; border-left: 2px solid rgba(43,11,63,.12); }
 .cf-nest .check { font-size: .9rem; }
+
+/* Filters stick below the header and scroll on their own when taller than the screen */
+@media (min-width: 992px) {
+  .filters-desktop { position: sticky; top: 176px; max-height: calc(100vh - 192px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding-right: 4px; }
+}
