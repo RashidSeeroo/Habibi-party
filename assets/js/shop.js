@@ -34,7 +34,7 @@
   /* Balloon sub-categories come from the Balloons menu itself */
   const TREE = [...document.querySelectorAll('#mega-1 .mega-balloons > div')].map(col => ({
     name: col.querySelector('h4 a').textContent.trim(),
-    items: [...col.querySelectorAll('li a')].map(a => a.textContent.trim())
+    items: [...col.querySelectorAll('li a')].map(a => a.textContent.trim()).filter(x => x !== col.querySelector('h4 a').textContent.trim())
   }));
 
   const state = {
@@ -165,31 +165,57 @@
     rebuild();
   });
 
-  /* Browse rows: balloon sub-categories, items and materials */
+  /* Browse rows and material chips live in the banner, like the Balloons category page */
   const browse = $('[data-browse]');
+  const heroMat = $('[data-hero-mat]');
+  const hero = $('.page-hero');
   const brow = (label, buttons) => `<div class="browse-row"><span class="browse-label">${label}</span><div class="browse-chips">${buttons}</div></div>`;
-  const bBtn = (kind, val, text, on) => `<button type="button" data-browse-set="${kind}|${val}" aria-pressed="${on}">${text}</button>`;
+  const bBtn = (kind, val, text, on, lead = '') => `<button type="button" data-browse-set="${kind}|${val}" aria-pressed="${on}">${lead}${text}</button>`;
   const renderBrowse = () => {
     const show = isBalloons() && state.cats.size === 1;
-    browse.hidden = !show;
-    if (!show) { browse.innerHTML = ''; return; }
+    hero.classList.toggle('is-cat', show);
+    browse.hidden = heroMat.hidden = !show;
+    heroCats.hidden = show;
+    if (!show) { browse.innerHTML = heroMat.innerHTML = ''; return; }
     const sub = TREE.find(t => t.name === state.sub);
-    let html = brow('In Balloons', bBtn('sub', '', 'All balloons', !state.sub) + TREE.map(t => bBtn('sub', t.name, t.name, t.name === state.sub)).join(''));
-    if (sub) html += brow(`In ${sub.name}`, bBtn('item', '', 'All', !state.item) + sub.items.map(i => bBtn('item', i, i, i === state.item)).join(''));
-    html += brow('Material', bBtn('material', '', 'All materials', !state.material) + MATERIALS.map(m => bBtn('material', m, m, m === state.material)).join(''));
+    let html = brow('In Balloons', TREE.map(t => bBtn('sub', t.name, t.name, t.name === state.sub)).join(''));
+    if (sub) html += brow(`In ${sub.name}`, sub.items.map(i => bBtn('item', i, i, i === state.item)).join(''));
     browse.innerHTML = html;
+    heroMat.innerHTML = brow('Material', bBtn('material', '', 'All materials', !state.material) + MATERIALS.map(m => bBtn('material', m, m, m === state.material, `<span class="mat-dot mat-dot--${m.toLowerCase()}"></span>`)).join(''));
   };
-  browse.addEventListener('click', e => {
+  const onBrowse = e => {
     const b = e.target.closest('[data-browse-set]');
     if (!b) return;
     const [kind, val] = b.dataset.browseSet.split('|');
-    if (kind === 'sub') { state.sub = val; state.item = ''; }
+    if (kind === 'sub') { state.sub = state.sub === val ? '' : val; state.item = ''; }
+    else if (kind === 'item') state.item = state.item === val ? '' : val;
     else state[kind] = val;
     render();
-    const again = browse.querySelector(`[data-browse-set="${b.dataset.browseSet}"]`);
+    const again = hero.querySelector(`[data-browse-set="${b.dataset.browseSet}"]`);
     again && again.focus();
-  });
+  };
+  browse.addEventListener('click', onBrowse);
+  heroMat.addEventListener('click', onBrowse);
 
+  const crumbs = $('[data-crumbs]');
+  const setCrumbs = () => {
+    const parts = ['<a href="index.html">Home</a>'];
+    const cat = state.cats.size === 1 ? [...state.cats][0] : '';
+    const link = (text, fn) => `<a href="#" data-crumb="${fn}">${text}</a>`;
+    if (cat) {
+      parts.push(state.sub ? link(cat, 'cat') : `<span aria-current="page">${cat}</span>`);
+      if (state.sub) parts.push(state.item ? link(state.sub, 'sub') : `<span aria-current="page">${state.sub}</span>`);
+      if (state.item) parts.push(`<span aria-current="page">${state.item}</span>`);
+    } else parts.push('<span aria-current="page">All products</span>');
+    crumbs.innerHTML = parts.join(' / ');
+  };
+  crumbs.addEventListener('click', e => {
+    const a = e.target.closest('[data-crumb]');
+    if (!a) return;
+    e.preventDefault();
+    if (a.dataset.crumb === 'cat') { state.sub = ''; state.item = ''; } else state.item = '';
+    render();
+  });
   const sorters = {
     featured: () => 0,
     'price-asc': (a, b) => a.price - b.price,
@@ -258,6 +284,7 @@
     if (chips.children.length) chips.insertAdjacentHTML('beforeend', '<button type="button" class="af-clear" data-chip="all|"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>Clear all</button>');
 
     setHeading();
+    setCrumbs();
     if (!reduced && list.length) {
       waapi.animate([...grid.children].slice(0, 12), { opacity: [0, 1], translateY: [20, 0], delay: stagger(40), duration: 700, ease: 'outExpo' });
     }

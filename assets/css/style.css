@@ -1545,3 +1545,21 @@ html.lb-open { overflow: hidden; }
 .products.is-list .pcard .rating { margin: 0 0 4px; }
 .products.is-list .pcard h3 { font-size: 1.1rem; }
 @media (max-width: 575.98px) { .products.is-list .pcard { grid-template-columns: 110px minmax(0, 1fr); } .products.is-list .pcard-art { width: 110px; } }
+
+/* Balloons banner: material chips beside the title, sub-category rows below */
+.page-hero.is-cat img { display: none; }
+.page-hero .hero-mat { align-self: flex-start; margin-left: auto; }
+.page-hero .hero-mat[hidden], .page-hero .hero-browse[hidden] { display: none; }
+.page-hero .hero-mat .browse-row { align-items: center; }
+.page-hero .hero-browse { display: grid; gap: 10px; margin-top: 12px; }
+.page-hero .browse-label { color: rgba(255,255,255,.8); padding-top: 0; width: auto; min-width: 0; margin-right: 4px; font-size: .7rem; }
+.page-hero .browse-row { align-items: center; }
+.page-hero .browse-chips button { display: inline-flex; align-items: center; gap: 7px; padding: 6px 14px; border: 1.5px solid rgba(255,255,255,.5); background: rgba(255,255,255,.12); color: #fff; font-size: .82rem; font-weight: 700; }
+.page-hero .browse-chips button:hover { background: rgba(255,255,255,.28); border-color: rgba(255,255,255,.8); }
+.page-hero .browse-chips button[aria-pressed="true"] { background: #fff; border-color: #fff; color: var(--pink-dark, #C2146B); }
+.mat-dot { width: 11px; height: 11px; border-radius: 50%; flex: none; }
+.mat-dot--standard { background: radial-gradient(circle at 35% 30%, #fff, #E9578F 55%, #B82D63); }
+.mat-dot--metallic { background: radial-gradient(circle at 35% 30%, #fff, #E7A1B8 45%, #B5586F); }
+.mat-dot--macaron { background: #F7C9D6; }
+.mat-dot--chrome { background: radial-gradient(circle at 35% 30%, #fff, #8E1B3E 50%, #3D0A1C); }
+@media (max-width: 767.98px) { .page-hero .hero-mat { margin-left: 0; align-self: stretch; } .page-hero .shell { flex-wrap: wrap; } }

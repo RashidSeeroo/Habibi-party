@@ -71,13 +71,15 @@
   <section class="page-hero" aria-labelledby="shop-title">
     <div class="shell">
       <div>
-        <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span aria-current="page">Shop</span></nav>
+        <nav class="crumbs" aria-label="Breadcrumb" data-crumbs><a href="index.html">Home</a> / <span aria-current="page">Shop</span></nav>
         <h1 id="shop-title" data-shop-title>All products</h1>
         <p data-shop-lead>Balloons, decorations, tableware and favours, ready to deliver across the UAE.</p>
         <div class="hero-cats" data-hero-cats hidden><span class="hero-cats-label">Categories</span><div class="hero-cats-chips" data-hero-cat-chips></div></div>
       </div>
+      <div class="hero-mat" data-hero-mat hidden></div>
       <img src="assets/img/mascot-box.svg" alt="" width="240" height="194" data-hero-mascot>
     </div>
+    <div class="shell hero-browse" data-browse hidden></div>
   </section>
 
   <div class="shell shop-toolbar">
@@ -102,7 +104,6 @@
       <aside class="filters filters-desktop" aria-label="Filters" data-filters-host></aside>
 
       <div>
-        <div class="browse" data-browse hidden></div>
         <div class="active-filters" data-active-filters></div>
         <p class="shop-count m-0" role="status" aria-live="polite">Showing <b data-result-count>0</b> of <span data-total>0</span> products</p>
         <div class="products" data-grid></div>
