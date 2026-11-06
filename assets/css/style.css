@@ -1635,3 +1635,9 @@ html.lb-open { overflow: hidden; }
 .box-total .amt { font-size: 2.8rem; }
 .fit { font-size: .9rem; padding: 5px 14px; }
 .box-result .btn-hp { min-height: 56px; font-size: 1.05rem; }
+
+/* Bundle list: tighter spacing (desktop) */
+@media (min-width: 768px) {
+  .b-list { gap: 0; }
+  .b-list a { padding: 5px 0; line-height: 1.25; }
+}
