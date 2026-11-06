@@ -23,24 +23,24 @@ window.HP = (() => {
     `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name] || icons.balloon}</svg>`;
 
   const products = [
-    { id: 'arch-rose', name: 'Rose Gold Balloon Arch Kit, 73 pieces', cat: 'Balloons', occ: ['Birthday', 'Wedding', 'Baby shower'], price: 129, was: 165, rating: 4.8, reviews: 214, badge: 'Best seller', icon: 'arch', tone: 'pink', isNew: false },
+    { id: 'arch-rose', name: 'Rose Gold Balloon Arch Kit, 73 pieces', cat: 'Balloons', sub: 'Balloon Bouquets & Arrangements', items: ['Ready-Made Garlands & Arches'], colour: ['Rose Gold', 'Pink'], shape: 'Round', occ: ['Birthday', 'Wedding', 'Baby shower'], price: 129, was: 165, rating: 4.8, reviews: 214, badge: 'Best seller', icon: 'arch', tone: 'pink', isNew: false },
     { id: 'tableware-6', name: 'Happy Birthday Party Tableware Set for 6', cat: 'Tableware', occ: ['Birthday'], price: 89, rating: 4.9, reviews: 156, badge: 'New', icon: 'plates', tone: 'sky', isNew: true },
     { id: 'curtain-set', name: 'Foil Curtain Backdrop & Banner Set', cat: 'Decorations', occ: ['Birthday', 'Celebration', 'Graduation'], price: 65, was: 85, rating: 4.7, reviews: 98, icon: 'curtain', tone: 'lilac' },
-    { id: 'number-32', name: 'Gold Number Foil Balloon, 32 inch', cat: 'Balloons', occ: ['Birthday'], price: 32, rating: 4.6, reviews: 67, icon: 'number', tone: 'sun' },
+    { id: 'number-32', name: 'Gold Number Foil Balloon, 32 inch', cat: 'Balloons', sub: 'Foil Balloons', items: ['Number Balloons'], colour: ['Gold'], shape: 'Number', size: '32in', occ: ['Birthday'], price: 32, rating: 4.6, reviews: 67, icon: 'number', tone: 'sun' },
     { id: 'flower-centre', name: 'Artificial Flower Centrepiece Set', cat: 'Decorations', occ: ['Wedding', 'Baby shower'], price: 74, rating: 4.8, reviews: 43, badge: 'Best seller', icon: 'flower', tone: 'mint' },
     { id: 'gold-plates', name: 'Gold Paper Party Plates, Set of 10', cat: 'Tableware', occ: ['Birthday', 'Wedding', 'Ramadan & Eid'], price: 55, rating: 4.9, reviews: 121, icon: 'plates', tone: 'sun' },
     { id: 'organza-25', name: 'Organza Favour Pouches, 25 pack', cat: 'Party favours', occ: ['Wedding', 'Baby shower', 'Ramadan & Eid'], price: 41, was: 52, rating: 4.7, reviews: 76, icon: 'pouch', tone: 'pink' },
-    { id: 'latex-100', name: 'Classic Latex Balloon Bundle, 100 pack', cat: 'Balloons', occ: ['Birthday', 'Celebration', 'Graduation'], price: 18, rating: 4.5, reviews: 302, badge: 'Best seller', icon: 'balloon', tone: 'red' },
+    { id: 'latex-100', name: 'Classic Latex Balloon Bundle, 100 pack', cat: 'Balloons', sub: 'Latex Balloons', items: ['Solid Colour Latex', 'Standard & Metallic Latex'], material: 'Standard', colour: ['Multicolour'], shape: 'Round', size: '12in', occ: ['Birthday', 'Celebration', 'Graduation'], price: 18, rating: 4.5, reviews: 302, badge: 'Best seller', icon: 'balloon', tone: 'red' },
     { id: 'hb-banner', name: 'Happy Birthday foil banner', cat: 'Decorations', occ: ['Birthday'], price: 45, rating: 4.7, reviews: 88, icon: 'banner', tone: 'sun' },
-    { id: 'garland-pink', name: 'Pink balloon garland kit', cat: 'Balloons', occ: ['Birthday', 'Baby shower'], price: 139, rating: 4.8, reviews: 64, icon: 'garland', tone: 'pink' },
-    { id: 'garland-rainbow', name: 'Rainbow balloon garland kit', cat: 'Balloons', occ: ['Birthday'], price: 139, rating: 4.7, reviews: 51, icon: 'garland', tone: 'sky', isNew: true, badge: 'New' },
+    { id: 'garland-pink', name: 'Pink balloon garland kit', cat: 'Balloons', sub: 'Balloon Bouquets & Arrangements', items: ['Ready-Made Garlands & Arches'], colour: ['Pink'], shape: 'Round', occ: ['Birthday', 'Baby shower'], price: 139, rating: 4.8, reviews: 64, icon: 'garland', tone: 'pink' },
+    { id: 'garland-rainbow', name: 'Rainbow balloon garland kit', cat: 'Balloons', sub: 'Balloon Bouquets & Arrangements', items: ['Ready-Made Garlands & Arches'], colour: ['Multicolour'], shape: 'Round', occ: ['Birthday'], price: 139, rating: 4.7, reviews: 51, icon: 'garland', tone: 'sky', isNew: true, badge: 'New' },
     { id: 'fringe', name: 'Foil fringe curtain', cat: 'Decorations', occ: ['Birthday', 'Celebration'], price: 65, rating: 4.6, reviews: 72, icon: 'curtain', tone: 'pink' },
     { id: 'sequin-runner', name: 'Sequin table runner', cat: 'Tableware', occ: ['Wedding', 'Birthday'], price: 38, rating: 4.6, reviews: 39, icon: 'runner', tone: 'lilac' },
     { id: 'foil-skirt', name: 'Foil table skirt', cat: 'Tableware', occ: ['Birthday', 'Celebration'], price: 34, rating: 4.5, reviews: 33, icon: 'skirt', tone: 'mint' },
-    { id: 'daisy-foil', name: 'Daisy foil balloon', cat: 'Balloons', occ: ['Birthday', 'Baby shower'], price: 24, rating: 4.7, reviews: 29, icon: 'daisy', tone: 'sun' },
+    { id: 'daisy-foil', name: 'Daisy foil balloon', cat: 'Balloons', sub: 'Foil Balloons', items: ['Shape Balloons (Hearts, Stars, Rounds)'], colour: ['Yellow'], shape: 'Round', occ: ['Birthday', 'Baby shower'], price: 24, rating: 4.7, reviews: 29, icon: 'daisy', tone: 'sun' },
     { id: 'confetti-runner', name: 'Confetti table runner', cat: 'Tableware', occ: ['Birthday', 'Celebration'], price: 29, rating: 4.4, reviews: 21, icon: 'runner', tone: 'sky' },
     { id: 'gold-chargers', name: 'Gold charger plates', cat: 'Tableware', occ: ['Wedding', 'Ramadan & Eid'], price: 55, rating: 4.8, reviews: 47, icon: 'charger', tone: 'sun' },
-    { id: 'arch-kit', name: 'Balloon arch kit', cat: 'Balloons', occ: ['Wedding', 'Celebration'], price: 129, rating: 4.7, reviews: 58, icon: 'arch', tone: 'lilac' }
+    { id: 'arch-kit', name: 'Balloon arch kit', cat: 'Balloons', sub: 'Balloon Bouquets & Arrangements', items: ['Ready-Made Garlands & Arches'], colour: ['Lavender'], shape: 'Round', occ: ['Wedding', 'Celebration'], price: 129, rating: 4.7, reviews: 58, icon: 'arch', tone: 'lilac' }
   ];
 
   products.forEach(p => { p.img = 'assets/img/products/' + p.id + '.jpg'; });
