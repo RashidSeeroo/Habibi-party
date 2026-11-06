@@ -1635,10 +1635,3 @@ html.lb-open { overflow: hidden; }
 .box-total .amt { font-size: 2.8rem; }
 .fit { font-size: .9rem; padding: 5px 14px; }
 .box-result .btn-hp { min-height: 56px; font-size: 1.05rem; }
-
-/* Habibi Box questions: label and chips on the same line */
-.builder .bf { display: flex; align-items: center; gap: 12px; margin: 0 0 10px; }
-.builder .bf-label { flex: none; width: 74px; font-family: var(--display); font-weight: 800; font-size: 1rem; line-height: 1.2; }
-.builder .bf .opts { margin-left: 0; flex: 1; min-width: 0; }
-@media (max-width: 575.98px) { .builder .bf { flex-direction: column; align-items: flex-start; gap: 6px; } .builder .bf-label { width: auto; } }
-.box-grid { align-items: start; }
