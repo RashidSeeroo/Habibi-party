@@ -1563,3 +1563,9 @@ html.lb-open { overflow: hidden; }
 .mat-dot--macaron { background: #F7C9D6; }
 .mat-dot--chrome { background: radial-gradient(circle at 35% 30%, #fff, #8E1B3E 50%, #3D0A1C); }
 @media (max-width: 767.98px) { .page-hero .hero-mat { margin-left: 0; align-self: stretch; } .page-hero .shell { flex-wrap: wrap; } }
+
+/* Banner rows: label sits on top of its chips */
+.page-hero .browse-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+.page-hero .browse-label { margin: 0; }
+.page-hero .hero-mat .browse-row { align-items: flex-end; }
+@media (max-width: 767.98px) { .page-hero .hero-mat .browse-row { align-items: flex-start; } }
