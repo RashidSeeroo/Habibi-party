@@ -44,6 +44,38 @@ window.HP = (() => {
   ];
 
   products.forEach(p => { p.img = 'assets/img/products/' + p.id + '.jpg'; });
+  /* Colour range (same demo catalogue as the live site's All products page) */
+  (() => {
+    const COLOURS = ['Black', 'Baby Blue', 'Baby Pink', 'Beige', 'Blue', 'Creme', 'Gold', 'Green', 'Lavender', 'Multicolour', 'Orange', 'Pink', 'Purple', 'Red', 'Rose Gold', 'Silver', 'White', 'Yellow', 'Brown'];
+    const TONES = { 'Baby Blue': 'sky', 'Blue': 'sky', 'Baby Pink': 'blush', 'Pink': 'pink', 'Red': 'red', 'Orange': 'sun', 'Yellow': 'sun', 'Gold': 'sun', 'Beige': 'blush', 'Creme': 'blush', 'Green': 'mint', 'Lavender': 'lilac', 'Purple': 'lilac', 'Multicolour': 'pink', 'Rose Gold': 'pink', 'Silver': 'lilac', 'White': 'blush', 'Black': 'lilac', 'Brown': 'blush' };
+    const TYPES = [
+      ['Latex Balloon 12in \u2013 10 pcs', 'Balloons', 'balloon', 7.5, 'latex'], ['Foil Balloon 18in', 'Balloons', 'balloon', 14, 'foil'],
+      ['Paper Plates, 10 pack', 'Tableware', 'plates', 18], ['Paper Cups, 10 pack', 'Tableware', 'cup', 14],
+      ['Napkins, 20 pack', 'Tableware', 'plates', 12], ['Plastic Table Cover', 'Tableware', 'runner', 16],
+      ['Happy Birthday Banner', 'Decorations', 'banner', 25], ['Tissue Pom Poms, 6 pack', 'Decorations', 'garland', 26],
+      ['Gift Bag, Medium', 'Party favours', 'pouch', 6], ['Birthday Candles, 24 pack', 'Party favours', 'candle', 9]
+    ];
+    let h = 2166136261;
+    for (const c of 'habibi-colour-range') { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); }
+    const rnd = () => { h = Math.imul(h ^ (h >>> 15), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); return ((h ^= h >>> 16) >>> 0) / 4294967296; };
+    COLOURS.forEach(c => TYPES.forEach(([label, cat, icon, base, kind]) => {
+      if (rnd() > .28) return;
+      const heart = kind && rnd() > .7;
+      const name = `${c} ${heart ? 'Heart ' : ''}${label}`;
+      const p = {
+        id: 'colour-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+        name, cat, occ: ['Birthday', 'Celebration'], colour: [c], icon, tone: TONES[c] || 'blush',
+        price: Math.round(base * (.85 + rnd() * .4) * 100) / 100, isNew: rnd() > .85
+      };
+      if (kind) {
+        p.sub = kind === 'foil' ? 'Foil Balloons' : 'Latex Balloons';
+        p.shape = heart ? 'Heart' : 'Round';
+        p.size = kind === 'foil' ? '18in' : '12in';
+        if (kind === 'latex') p.material = 'Standard';
+      }
+      products.push(p);
+    }));
+  })();
 
   const packs = [
     { id: 'pack-love', name: 'Love & Hearts', price: 249, img: IMG + 'pack-1-love-hearts.webp' },
