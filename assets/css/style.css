@@ -1700,9 +1700,3 @@ html.is-ar h1, html.is-ar h2, html.is-ar h3 { line-height: 1.3; }
 [dir="rtl"] .bi-chevron-left, [dir="rtl"] .bi-arrow-left { display: inline-block; transform: scaleX(-1); }
 [dir="rtl"] input[type="tel"], [dir="rtl"] input[type="email"], [dir="rtl"] input[type="number"], [dir="rtl"] input[type="url"] { direction: ltr; text-align: right; }
 [dir="rtl"] .now-off + s { margin-inline-start: 8px; }
-
-/* language button: breathing room */
-.lang-btn { padding: 4px 18px; margin-inline-start: 14px; }
-.lang-btn--hdr { margin-inline-start: 0; margin-inline-end: 12px; }
-[dir="rtl"] .topbar .shell { gap: 28px; }
-[dir="rtl"] .topbar-links { gap: 28px; }
