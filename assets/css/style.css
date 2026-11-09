@@ -1676,3 +1676,10 @@ html.js-motion .occ-strip:not(.is-in) :is(.oc-card, .oc-more) { opacity: 0; }
 #range .bundles { --page: #F6EFFB; }
 #range { margin-bottom: clamp(28px, 4vw, 56px); }
 @media (max-width: 767.98px) { .b-list a.is-on { color: #fff; } }
+
+/* Habibi Box: stacked questions with "n of 4" step counters */
+.builder fieldset { margin: 0 0 18px; display: block; }
+.builder legend { float: none; width: auto; margin: 0 0 10px; padding: 0; line-height: 1.2; font-size: 1.2rem; display: flex; gap: 10px; align-items: baseline; }
+.builder legend small { font-family: var(--body); font-size: .8rem; font-weight: 700; color: var(--ink); opacity: .75; letter-spacing: 0; }
+.builder .opts { margin-left: 0; gap: 8px; }
+.opt span { min-height: 44px; padding: 0 18px; font-size: .95rem; }
