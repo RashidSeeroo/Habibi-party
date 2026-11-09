@@ -1669,3 +1669,10 @@ html.js-motion .occ-strip:not(.is-in) :is(.oc-card, .oc-more) { opacity: 0; }
 @media (max-width: 1099.98px) { .oc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 575.98px) { .oc-grid { grid-template-columns: 1fr; gap: 10px; } .oc-card { padding: 12px 14px 12px 12px; } .oc-icon { width: 46px; height: 46px; } .oc-go { opacity: 1; transform: none; } }
 @media (hover: none) { .oc-go { opacity: 1; transform: none; } }
+
+/* Bundle Deals: light full-width background */
+#range { position: relative; isolation: isolate; }
+#range::before { content: ""; position: absolute; inset: 0; z-index: -1; background: #F6EFFB; box-shadow: 0 0 0 100vmax #F6EFFB; clip-path: inset(0 -100vmax); }
+#range .bundles { --page: #F6EFFB; }
+#range { margin-bottom: clamp(28px, 4vw, 56px); }
+@media (max-width: 767.98px) { .b-list a.is-on { color: #fff; } }
