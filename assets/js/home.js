@@ -62,25 +62,15 @@
     waapi.animate(track, { translateX: ['0%', '-50%'], duration: 32000, loop: true, ease: 'linear' });
   }
 
-  /* ---------- Hero occasion strip ---------- */
+  /* ---------- Hero occasion cards ---------- */
   const occ = $('[data-occ]');
   if (occ) {
-    const chips = $('[data-occ-chips]', occ), next = $('[data-occ-next]', occ);
-    const atEnd = () => chips.scrollLeft + chips.clientWidth >= chips.scrollWidth - 4;
-    const sync = () => next.classList.toggle('is-end', atEnd());
-    next.addEventListener('click', () => {
-      if (atEnd()) chips.scrollTo({ left: 0, behavior: reduced ? 'auto' : 'smooth' });
-      else chips.scrollBy({ left: chips.clientWidth * .8, behavior: reduced ? 'auto' : 'smooth' });
-    });
-    chips.addEventListener('scroll', sync, { passive: true });
-    window.addEventListener('resize', sync);
-    sync();
     HP.onEnter([occ], el => {
       el.classList.add('is-in');
       if (reduced) return;
       waapi.animate($$('h2, p', el), { opacity: [0, 1], translateY: [18, 0], delay: stagger(90), duration: 700, ease: 'outExpo' });
-      waapi.animate($$('.occ-chips li', el), { opacity: [0, 1], translateY: [26, 0], scale: [.9, 1], delay: stagger(80, { start: 250 }), duration: 700, ease: 'outBack(1.6)' });
-      waapi.animate(next, { opacity: [0, 1], scale: [0, 1], delay: 700, duration: 600, ease: 'outBack(2)' });
+      waapi.animate($$('.oc-card', el), { opacity: [0, 1], translateY: [26, 0], scale: [.94, 1], delay: stagger(70, { start: 250 }), duration: 700, ease: 'outBack(1.4)' });
+      waapi.animate($('.oc-more', el), { opacity: [0, 1], delay: 800, duration: 500, ease: 'outExpo' });
     }, '0px');
   }
 
