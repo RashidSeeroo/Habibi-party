@@ -1734,4 +1734,4 @@ html.is-ar h1, html.is-ar h2, html.is-ar h3 { line-height: 1.3; }
 }
 
 /* hero text: centred in the clear area of the artwork */
-@media (min-width: 768px) { .hero-copy { left: 33%; top: 50%; transform: translate(-50%, -50%); width: min(36%, 640px); } }
+@media (min-width: 768px) { .hero-copy { left: 35%; top: 50%; transform: translate(-50%, -50%); width: min(36%, 640px); } }
