@@ -1711,3 +1711,24 @@ html.is-ar h1, html.is-ar h2, html.is-ar h3 { line-height: 1.3; }
 [dir="rtl"] .topbar-links .lang-btn { margin: 0 28px 0 0; }
 [dir="rtl"] .topbar-links a { border-left: 0; border-right: 1px solid rgba(255,255,255,.2); }
 [dir="rtl"] .topbar-links a:first-child { border-right: 1px solid rgba(255,255,255,.2); }
+
+/* hero banners: live (editable) text over the artwork */
+.hero-banner .carousel-item { position: relative; }
+.hero-copy { position: absolute; left: clamp(24px, 6vw, 110px); top: 50%; transform: translateY(-50%); width: min(38%, 560px); display: grid; justify-items: center; text-align: center; gap: clamp(8px, 1.1vw, 16px); pointer-events: none; z-index: 2; }
+.hero-copy > * { display: block; }
+.hc-eyebrow { display: flex; align-items: center; gap: 12px; font-family: var(--body); font-weight: 800; font-size: clamp(.7rem, 1.1vw, 1rem); letter-spacing: .24em; text-transform: uppercase; color: #8E1736; }
+.hc-eyebrow::before, .hc-eyebrow::after { content: ""; width: clamp(24px, 4vw, 64px); height: 2px; background: #8E1736; opacity: .7; }
+.hc-title { font-family: var(--display); font-weight: 700; text-transform: uppercase; line-height: .98; font-size: clamp(1.9rem, 3.5vw, 3.6rem); letter-spacing: -.01em; }
+.hc-title span { display: block; }
+.hc-l1 { color: #8E1736; }
+.hc-l2 { color: #E8B23A; }
+.hc-sub { font-family: var(--body); font-weight: 700; font-size: clamp(.85rem, 1.45vw, 1.3rem); color: #8E1736; max-width: 30ch; line-height: 1.3; }
+.hc-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; padding: clamp(10px, 1.1vw, 16px) clamp(22px, 2.8vw, 44px); border-radius: 999px; background: #F8CB4B; color: var(--ink); font-family: var(--body); font-weight: 800; font-size: clamp(.8rem, 1.3vw, 1.2rem); text-transform: uppercase; letter-spacing: .02em; box-shadow: 0 6px 18px rgba(142,23,54,.18); }
+.carousel-item:hover .hc-btn { background: #F5BE2E; }
+@media (max-width: 767.98px) {
+  .hero-copy { left: 0; right: 0; top: 0; transform: none; width: auto; padding: 22px 20px 0; gap: 8px; }
+  .hero-copy::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 440px; background: linear-gradient(to bottom, rgba(255,247,240,.96) 0, rgba(255,247,240,.9) 62%, rgba(255,247,240,0) 100%); z-index: -1; }
+  .hc-title { font-size: clamp(1.9rem, 9vw, 2.8rem); }
+  .hc-sub { font-size: .95rem; }
+  .hc-btn { font-size: .9rem; padding: 10px 24px; }
+}
