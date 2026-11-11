@@ -16,6 +16,7 @@
     'Golden Moments': 'لحظات ذهبية', 'Worth Celebrating': 'تستحق الاحتفال', 'Anniversaries, milestones and elegant celebrations': 'ذكرى سنوية ومناسبات مهمة واحتفالات أنيقة', 'Shop Anniversary': 'تسوق الذكرى السنوية',
     'Your Big Day,': 'يومك الكبير،', 'Beautifully Styled': 'بتنسيق جميل', 'Wedding and engagement decor, tableware and favours': 'ديكور الزفاف والخطوبة وأدوات المائدة والهدايا التذكارية', 'Shop Weddings': 'تسوق الأعراس',
     'Make Every Birthday': 'اجعل كل عيد ميلاد', 'Bright and Happy': 'مشرقاً وسعيداً', 'Balloons, cake toppers and tableware for every age': 'بالونات وزينة كيك وأدوات مائدة لكل الأعمار', 'Shop Birthdays': 'تسوق أعياد الميلاد',
+    'Back to top': 'العودة إلى الأعلى',
     'Colour': 'اللون', 'Shape': 'الشكل', 'Size': 'الحجم', 'Price': 'السعر', 'Material': 'الخامة', 'Availability': 'التوفر',
     'Category': 'الفئة', 'Occasion': 'المناسبة', 'Round': 'دائري', 'Star': 'نجمة', 'Heart': 'قلب', 'Number': 'رقم',
     'Letter': 'حرف', 'Square': 'مربع', 'Small': 'صغير', 'Medium': 'وسط', 'Large': 'كبير', 'Jumbo': 'ضخم',

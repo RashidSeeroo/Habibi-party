@@ -294,6 +294,22 @@
     msg.textContent = 'You are on the list. First ideas arrive this fortnight.';
     form.reset();
   }));
+
+  /* back to top */
+  const top = document.createElement('button');
+  top.type = 'button';
+  top.className = 'to-top';
+  top.setAttribute('aria-label', 'Back to top');
+  top.innerHTML = '<i class="bi bi-arrow-up" aria-hidden="true"></i>';
+  document.body.appendChild(top);
+  let ticking = false;
+  const toggleTop = () => { ticking = false; top.classList.toggle('show', window.scrollY > 500); };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(toggleTop); } }, { passive: true });
+  top.addEventListener('click', () => {
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: calm ? 'auto' : 'smooth' });
+  });
+  toggleTop();
 })();
 
 /* Signed-in header: account icon goes to the profile */
