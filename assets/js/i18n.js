@@ -119,7 +119,22 @@
     });
   };
 
-  const run = () => { busy = true; try { apply(document.body); metaFix(); } finally { busy = false; } };
+  /* Arabic-script versions of the header logo and the 25-years mark */
+  const LOGOS = [
+    { sel: 'img[src$="assets/img/logo.svg"]', ar: 'assets/img/logo-ar.png' },
+    { sel: 'img.brand-25', ar: 'assets/img/anniversary-25-ar.png' }
+  ];
+  const swapLogos = () => {
+    LOGOS.forEach(L => document.querySelectorAll(L.sel + ',img[data-en-src]').forEach(img => {
+      if (!img.matches(L.sel) && !(img.dataset.arSrc === L.ar)) return;
+      if (!img.dataset.enSrc) img.dataset.enSrc = img.getAttribute('src');
+      img.dataset.arSrc = L.ar;
+      const next = lang === 'ar' ? L.ar : img.dataset.enSrc;
+      if (img.getAttribute('src') !== next) img.setAttribute('src', next);
+    }));
+  };
+
+  const run = () => { swapLogos(); busy = true; try { apply(document.body); metaFix(); } finally { busy = false; } };
 
   const set = (l, persist = true) => {
     lang = l === 'ar' ? 'ar' : 'en';
